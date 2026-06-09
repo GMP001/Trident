@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 96 96">
+  <!-- Generator: Adobe Illustrator 29.4.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 152)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #a9a9a9;
+      }
+
+      .st2 {
+        fill: #43aed3;
+      }
+
+      .st3 {
+        fill: #d9d9d9;
+      }
+
+      .st4 {
+        fill: #003e62;
+      }
+
+      .st5 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st6 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st7 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st8 {
+        fill: #b5e0f5;
+      }
+
+      .st9 {
+        fill: #ededed;
+      }
+
+      .st10 {
+        fill: #e7f5fc;
+      }
+
+      .st11 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st0" width="96" height="96" rx="5" ry="5"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st0" x="32" y="20" width="27" height="59"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st0" x="47" y="37" width="30" height="48.29"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st0" x="20" y="38" width="16" height="47"/>
+    </clipPath>
+  </defs>
+  <g class="st11">
+    <g>
+      <rect class="st8" width="96" height="96" rx="5" ry="5"/>
+      <rect class="st3" y="67" width="96" height="29"/>
+      <g class="st5">
+        <g>
+          <path class="st10" d="M34.22,79h22.57c1.22,0,2.22-1.03,2.22-2.29v-41.91h-26.98v41.93c-.02,1.26.98,2.27,2.2,2.27Z"/>
+          <path class="st4" d="M35.16,24.75h20.61l3.23,10.05h-27l3.16-10.05h0Z"/>
+          <path class="st10" d="M55.84,20h-20.67v4.75h20.67v-4.75Z"/>
+          <path class="st4" d="M52.89,39.04h-14.75v30.77h14.75v-30.77ZM52.89,72.15h-14.75v2.12h14.75v-2.12Z"/>
+          <path class="st10" d="M45.5,31.31c-1.92,0-3.47-.92-3.47-2.06s1.55-2.06,3.47-2.06,3.47.92,3.47,2.06-1.55,2.06-3.47,2.06Z"/>
+        </g>
+      </g>
+      <g class="st7">
+        <g>
+          <path class="st1" d="M73.38,43.54h-9.08c-.08,0-.14-.06-.14-.14v-4.8c0-.37.31-.66.67-.66h8.05c.36,0,.66.3.66.66v4.81c0,.07-.04.14-.11.15-.02,0-.04,0-.05,0h0Z"/>
+          <path class="st8" d="M66.19,39.26h-.07v2.69h.07v-2.69Z"/>
+          <path class="st8" d="M67.91,39.26h-.07v2.69h.07v-2.69Z"/>
+          <path class="st8" d="M69.64,39.26h-.07v2.69h.07v-2.69Z"/>
+          <path class="st8" d="M71.38,39.26h-.07v2.69h.07v-2.69Z"/>
+          <path class="st2" d="M73.54,46.73l-.47-.14c-.52-.16-.87-.64-.87-1.18v-1.87h-6.67v1.91c0,.54-.36,1.02-.87,1.18l-.48.14c-2.1.61-3.55,2.54-3.54,4.72v31.33c0,1.36,1.1,2.46,2.46,2.46h11.46c1.36,0,2.46-1.1,2.46-2.46v-31.38c0-2.16-1.39-4.08-3.46-4.72Z"/>
+        </g>
+      </g>
+      <path class="st1" d="M65.88,74.73l-3.54-16.19c-.07-.33-.11-.66-.11-.99v-1.62h-4.63v1.62c0,.33-.04.67-.11.99l-3.54,16.19c-.12.54-.18,1.09-.18,1.64v9.81c0,1.02.82,1.84,1.84,1.84h8.6c1.02,0,1.84-.82,1.84-1.84v-9.81c0-.55-.06-1.1-.18-1.64Z"/>
+      <path class="st4" d="M57.82,52.25h4.13c.36,0,.66.3.66.66v3.91c0,.07-.06.13-.13.13h-5.19c-.07,0-.13-.06-.13-.13v-3.91c0-.36.3-.66.66-.66Z"/>
+      <path class="st9" d="M58.49,53.34h-.05v2.63h.05v-2.63Z"/>
+      <path class="st9" d="M59.87,53.34h-.05v2.63h.05v-2.63Z"/>
+      <path class="st9" d="M61.29,53.34h-.05v2.63h.05v-2.63Z"/>
+      <g class="st6">
+        <g>
+          <path class="st1" d="M36,56.68v23.91c0,2.36-1.87,4.41-4.25,4.41h-7.51c-2.27,0-4.25-1.95-4.25-4.41v-23.91c0-1.95,1.09-3.79,2.76-4.62l2.86-12.93h4.74l2.86,12.93c1.68.82,2.76,2.56,2.76,4.62"/>
+          <path class="st4" d="M31.16,39.43c0,.31-.2.51-.49.51h-5.24c-.29,0-.49-.21-.49-.51v-.92c0-.31.2-.51.49-.51h5.24c.29,0,.49.21.49.51v.92Z"/>
+          <path class="st8" d="M20.1,61.91h15.9v13.65h-15.9v-13.65Z"/>
+          <path class="st4" d="M28,74.33c-1.98,0-3.56-1.64-3.56-3.69v-3.69c0-2.05,1.58-3.69,3.56-3.69s3.56,1.64,3.56,3.69v3.69c.1,2.05-1.58,3.69-3.56,3.69Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
