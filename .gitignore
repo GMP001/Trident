@@ -1,0 +1,17 @@
+*.mp4
+*.MP4
+*.webm
+*.mov
+*.avi
+*.mkv
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.avif
+uploads/
+public/uploads/
+node_modules/
+dist/
+.env
