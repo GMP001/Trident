@@ -117,6 +117,8 @@ const OceanTransport = () => {
   const loadContent = async () => {
     try {
       setError(null);
+      console.log('Fetching ocean-transport content...'); // Debug
+      
       const pageContent = await contentAPI.getPage('ocean-transport');
       
       console.log('Loaded ocean transport content:', pageContent);
@@ -132,10 +134,14 @@ const OceanTransport = () => {
           cta: { ...defaultContent.cta, ...(pageContent.cta || {}) }
         };
         setContent(mergedContent);
+        console.log('Content merged successfully');
+      } else {
+        console.log('No content from API, using default');
       }
     } catch (error) {
       console.error('Error loading ocean transport content:', error);
       setError('Failed to load content. Using default content.');
+      // Keep default content as fallback
     } finally {
       setLoading(false);
     }

@@ -3530,7 +3530,7 @@ const ContentEditor = () => {
     );
   }
 
-  const currentPage = content?.pages[selectedPage];
+  const currentPage = content?.pages?.[selectedPage] ?? content?.[selectedPage];
   const editableSections = getEditableSections(selectedPage);
 
   return (
