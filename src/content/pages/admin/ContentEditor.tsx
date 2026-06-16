@@ -48,13 +48,7 @@ const ContentEditor = () => {
 
   // Helper to get current page data from either pages or root
   const getCurrentPageData = () => {
-    if (content?.pages?.[selectedPage]) {
-      return { ...content.pages[selectedPage] };
-    }
-    if (content?.[selectedPage]) {
-      return { ...content[selectedPage] };
-    }
-    return {};
+      return content?.pages?.[selectedPage] || {};
   };
 
 // ========== HOMEPAGE SECTION RENDER FUNCTIONS ==========
@@ -182,7 +176,7 @@ const ContentEditor = () => {
     if (pageId === 'lcl') {
         return ['hero', 'promotionalCard', 'whatIsLCL', 'whyChooseLCL', 'lclVsFCL', 'whenToUseLCL', 'howItWorks', 'costInfo', 'faqs', 'cta'];
     }
-      if (pageId === 'air-freight') {
+    if (pageId === 'air-freight') {
         return ['hero', 'servicesTitle', 'airFreight', 'tridentAirCargo', 'seaAir', 'airCharter', 'whyChooseUs', 'howItWorks', 'faqs', 'cta'];
     }
     if (pageId === 'ground-freight') {
@@ -293,89 +287,99 @@ const ContentEditor = () => {
 
   // Handle image upload
   const handleImageUpload = async (file: File, fieldPath: string) => {
-    setUploadingImage(true);
-    setEditingField(fieldPath);
-    
-    if (file.size > 200 * 1024 * 1024) {
-      setSaveMessage('❌ File too large. Maximum size is 200MB.');
-      setTimeout(() => setSaveMessage(''), 3000);
-      setUploadingImage(false);
-      return;
-    }
-    
-    try {
-      const formData = new FormData();
-      formData.append('image', file);
+      setUploadingImage(true);
+      setEditingField(fieldPath);
       
-      const token = localStorage.getItem('admin_token');
-      const response = await fetch('http://localhost:5000/api/upload', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: formData,
-      });
-      
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Upload failed');
+      if (file.size > 200 * 1024 * 1024) {
+        setSaveMessage('❌ File too large. Maximum size is 200MB.');
+        setTimeout(() => setSaveMessage(''), 3000);
+        setUploadingImage(false);
+        return;
       }
       
-      const data = await response.json();
-      const filePath = data.filePath;
-      
-      // Get current page data
-      const currentPageContent = getCurrentPageData();
-      const fieldParts = fieldPath.split('.');
-      
-      if (fieldParts.length === 2) {
-        // Simple field: hero.image
-        if (!currentPageContent[fieldParts[0]]) currentPageContent[fieldParts[0]] = {};
-        currentPageContent[fieldParts[0]][fieldParts[1]] = filePath;
-      } 
-      else if (fieldParts.length === 3) {
-        const parentName = fieldParts[0];   // "gallery"
-        const childName = fieldParts[1];    // "images"
-        const indexOrProp = fieldParts[2];  // "0" or "image"
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
         
-        // Check if this is an array update (e.g., gallery.images.0)
-        if (currentPageContent[parentName] && Array.isArray(currentPageContent[parentName][childName])) {
-          // Update array at specific index
-          const arrayIndex = parseInt(indexOrProp);
-          if (!isNaN(arrayIndex)) {
-            if (!currentPageContent[parentName][childName]) {
-              currentPageContent[parentName][childName] = [];
-            }
-            currentPageContent[parentName][childName][arrayIndex] = filePath;
-          }
-        } else {
-          // Regular object property (e.g., predictableDeliveries.image)
-          if (!currentPageContent[parentName]) currentPageContent[parentName] = {};
-          currentPageContent[parentName][childName] = filePath;
+        const token = localStorage.getItem('admin_token');
+        const response = await fetch('http://localhost:5000/api/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Upload failed');
         }
-      }
-      
-      // Save to backend
-      await contentAPI.updatePage(selectedPage, currentPageContent);
-      
-      // Update local state
-      const updatedContent = { ...content };
-      if (updatedContent.pages && updatedContent.pages[selectedPage]) {
+        
+        const data = await response.json();
+        const filePath = data.filePath;
+        
+        // Get current page data
+        const currentPageContent = getCurrentPageData();
+        const fieldParts = fieldPath.split('.');
+        
+        // ===== FIXED: Handle different field path depths =====
+        
+        if (fieldParts.length === 2) {
+          // Simple field: hero.image, servicesDescription.image, hero.video
+          const [section, field] = fieldParts;
+          if (!currentPageContent[section]) {
+            currentPageContent[section] = {};
+          }
+          currentPageContent[section][field] = filePath;
+        } 
+        else if (fieldParts.length === 3) {
+          const [parentName, indexStr, fieldName] = fieldParts;
+          const arrayIndex = parseInt(indexStr);
+          
+          // Check if parent is an array (e.g., solutions, features, faqs)
+          if (Array.isArray(currentPageContent[parentName])) {
+            // It's an array of objects: solutions.0.image, faqs.1.question
+            if (!isNaN(arrayIndex) && arrayIndex >= 0 && arrayIndex < currentPageContent[parentName].length) {
+              // Update the specific field within the array object
+              // IMPORTANT: Preserve all existing properties of that object!
+              currentPageContent[parentName][arrayIndex] = {
+                ...currentPageContent[parentName][arrayIndex],
+                [fieldName]: filePath
+              };
+            }
+          } else if (currentPageContent[parentName] && typeof currentPageContent[parentName] === 'object') {
+            // It's a nested object: predictableDeliveries.image
+            currentPageContent[parentName][indexStr] = filePath;
+          }
+        }
+        else if (fieldParts.length === 4) {
+          // Deeper nesting: e.g., overview.speedAndFlexibility.image
+          const [section, subsection, subsubsection, field] = fieldParts;
+          if (!currentPageContent[section]) currentPageContent[section] = {};
+          if (!currentPageContent[section][subsection]) currentPageContent[section][subsection] = {};
+          currentPageContent[section][subsection][field] = filePath;
+        }
+        
+        // Save to backend
+        await contentAPI.updatePage(selectedPage, currentPageContent);
+        
+        // Update local state
+        const updatedContent = { ...content };
+        if (!updatedContent.pages) {
+          updatedContent.pages = {};
+        }
         updatedContent.pages[selectedPage] = currentPageContent;
-      } else {
-        updatedContent[selectedPage] = currentPageContent;
+        setContent(updatedContent);
+        
+        setSaveMessage(`✅ ${data.fileType || 'File'} uploaded and saved successfully!`);
+        setTimeout(() => setSaveMessage(''), 3000);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        setSaveMessage('❌ Failed to upload file. Please try again.');
+        setTimeout(() => setSaveMessage(''), 3000);
+      } finally {
+        setUploadingImage(false);
+        setEditingField(null);
       }
-      setContent(updatedContent);
-      
-      setSaveMessage(`✅ ${data.fileType || 'File'} uploaded and saved successfully!`);
-      setTimeout(() => setSaveMessage(''), 3000);
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      setSaveMessage('❌ Failed to upload file. Please try again.');
-      setTimeout(() => setSaveMessage(''), 3000);
-    } finally {
-      setUploadingImage(false);
-      setEditingField(null);
-    }
-  };
+    };
 
   const startEdit = (field: string, currentValue: string) => {
     setEditingField(field);
@@ -383,50 +387,115 @@ const ContentEditor = () => {
   };
 
   const saveEdit = async () => {
-    setSaving(true);
-    
-    try {
-      // Get the current complete page data
-      const currentPageContent = { ...content.pages[selectedPage] || content[selectedPage] };
-      const fieldParts = editingField!.split('.');
+      setSaving(true);
       
-      // Update only the specific field
-      if (fieldParts.length === 2) {
-        if (!currentPageContent[fieldParts[0]]) currentPageContent[fieldParts[0]] = {};
-        currentPageContent[fieldParts[0]][fieldParts[1]] = editValue;
-      } else if (fieldParts.length === 3) {
-        const arrayName = fieldParts[0];
-        const index = parseInt(fieldParts[1]);
-        const property = fieldParts[2];
-        if (!currentPageContent[arrayName]) currentPageContent[arrayName] = [];
-        if (!currentPageContent[arrayName][index]) currentPageContent[arrayName][index] = {};
-        currentPageContent[arrayName][index][property] = editValue;
-      } else if (fieldParts.length === 1) {
-        currentPageContent[fieldParts[0]] = editValue;
-      }
-      
-      // Send the COMPLETE page data, not just the changed field
-      await contentAPI.updatePage(selectedPage, currentPageContent);
-      
-      // Update local state
-      const updatedContent = { ...content };
-      if (updatedContent.pages && updatedContent.pages[selectedPage]) {
+      try {
+        const currentPageContent = getCurrentPageData();
+        const fieldParts = editingField!.split('.');
+        
+        // Update only the specific field
+        if (fieldParts.length === 1) {
+          // e.g., "isActive"
+          currentPageContent[fieldParts[0]] = editValue;
+        }
+        else if (fieldParts.length === 2) {
+          // Simple field: hero.title, cta.subtitle
+          const [section, field] = fieldParts;
+          if (!currentPageContent[section]) currentPageContent[section] = {};
+          currentPageContent[section][field] = editValue;
+        } 
+        else if (fieldParts.length === 3) {
+          const [parent, middle, last] = fieldParts;
+          
+          // Check if parent is an array (e.g., faqs, features, solutions)
+          // Pattern: faqs.0.question → parent=faqs, middle=0(index), last=question
+          if (Array.isArray(currentPageContent[parent])) {
+            const index = parseInt(middle);
+            if (!isNaN(index)) {
+              if (!currentPageContent[parent][index]) currentPageContent[parent][index] = {};
+              currentPageContent[parent][index][last] = editValue;
+            }
+          } 
+          // Check if middle is an array (e.g., airFreight.points.0)
+          // Pattern: airFreight.points.0 → parent=airFreight, middle=points(array), last=0(index)
+          else if (currentPageContent[parent] && Array.isArray(currentPageContent[parent][middle])) {
+            const index = parseInt(last);
+            if (!isNaN(index)) {
+              currentPageContent[parent][middle][index] = editValue;
+            }
+          }
+          // Regular nested object: parent.middle.last
+          else {
+            if (!currentPageContent[parent]) currentPageContent[parent] = {};
+            if (!currentPageContent[parent][middle]) currentPageContent[parent][middle] = {};
+            currentPageContent[parent][middle][last] = editValue;
+          }
+        } 
+        else if (fieldParts.length === 4) {
+          // ===== FIXED: Correct parsing for whyChooseUs.benefits.0.title =====
+          // Pattern: parent.arrayName.index.field
+          // "whyChooseUs.benefits.0.title"
+          //     [0]         [1]     [2]  [3]
+          //   parent     arrayName index field
+          
+          const parent = fieldParts[0];      // "whyChooseUs"
+          const arrayName = fieldParts[1];   // "benefits"
+          const indexStr = fieldParts[2];    // "0"
+          const field = fieldParts[3];       // "title"
+          
+          const index = parseInt(indexStr);
+          
+          if (!isNaN(index)) {
+            // Ensure the parent object exists
+            if (!currentPageContent[parent]) {
+              currentPageContent[parent] = {};
+            }
+            // Ensure the array exists
+            if (!currentPageContent[parent][arrayName]) {
+              currentPageContent[parent][arrayName] = [];
+            }
+            // Ensure the array item exists
+            if (!currentPageContent[parent][arrayName][index]) {
+              currentPageContent[parent][arrayName][index] = {};
+            }
+            // Set the value
+            currentPageContent[parent][arrayName][index][field] = editValue;
+          }
+        }
+        else if (fieldParts.length === 5) {
+          // Handle deeper nesting if needed in future
+          // e.g., section.subsection.arrayName.index.field
+          const [section, subsection, arrayName, indexStr, field] = fieldParts;
+          const index = parseInt(indexStr);
+          
+          if (!isNaN(index)) {
+            if (!currentPageContent[section]) currentPageContent[section] = {};
+            if (!currentPageContent[section][subsection]) currentPageContent[section][subsection] = {};
+            if (!currentPageContent[section][subsection][arrayName]) currentPageContent[section][subsection][arrayName] = [];
+            if (!currentPageContent[section][subsection][arrayName][index]) currentPageContent[section][subsection][arrayName][index] = {};
+            currentPageContent[section][subsection][arrayName][index][field] = editValue;
+          }
+        }
+        
+        await contentAPI.updatePage(selectedPage, currentPageContent);
+        
+        const updatedContent = { ...content };
+        if (!updatedContent.pages) {
+          updatedContent.pages = {};
+        }
         updatedContent.pages[selectedPage] = currentPageContent;
-      } else {
-        updatedContent[selectedPage] = currentPageContent;
+        setContent(updatedContent);
+        setEditingField(null);
+        setSaveMessage('✅ Content saved successfully!');
+        setTimeout(() => setSaveMessage(''), 3000);
+      } catch (error) {
+        console.error('Save error:', error);
+        setSaveMessage('❌ Failed to save content');
+        setTimeout(() => setSaveMessage(''), 3000);
+      } finally {
+        setSaving(false);
       }
-      setContent(updatedContent);
-      setEditingField(null);
-      setSaveMessage('✅ Content saved successfully!');
-      setTimeout(() => setSaveMessage(''), 3000);
-    } catch (error) {
-      console.error('Save error:', error);
-      setSaveMessage('❌ Failed to save content');
-      setTimeout(() => setSaveMessage(''), 3000);
-    } finally {
-      setSaving(false);
-    }
-  };
+    };
 
   const togglePageActive = async () => {
     setSaving(true);
@@ -587,7 +656,6 @@ const ContentEditor = () => {
       </div>
     );
   };
-
 
 // ========== ABOUT US SECTION RENDER FUNCTIONS ==========
   // Render Hero Section with image upload
