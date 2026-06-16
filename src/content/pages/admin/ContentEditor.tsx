@@ -46,6 +46,16 @@ const ContentEditor = () => {
     { id: 'leadership', label: '👥 Leadership' },
   ];
 
+  // Helper to get current page data from either pages or root
+  const getCurrentPageData = () => {
+    if (content?.pages?.[selectedPage]) {
+      return { ...content.pages[selectedPage] };
+    }
+    if (content?.[selectedPage]) {
+      return { ...content[selectedPage] };
+    }
+    return {};
+  };
 
 // ========== HOMEPAGE SECTION RENDER FUNCTIONS ==========
     // Render Hero Section for Homepage
@@ -283,11 +293,9 @@ const ContentEditor = () => {
 
   // Handle image upload
   const handleImageUpload = async (file: File, fieldPath: string) => {
-    
     setUploadingImage(true);
     setEditingField(fieldPath);
     
-    // Check file size (200MB max)
     if (file.size > 200 * 1024 * 1024) {
       setSaveMessage('❌ File too large. Maximum size is 200MB.');
       setTimeout(() => setSaveMessage(''), 3000);
@@ -300,15 +308,11 @@ const ContentEditor = () => {
       formData.append('image', file);
       
       const token = localStorage.getItem('admin_token');
-      
       const response = await fetch('http://localhost:5000/api/upload', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
         body: formData,
       });
-      
       
       if (!response.ok) {
         const error = await response.json();
@@ -318,26 +322,35 @@ const ContentEditor = () => {
       const data = await response.json();
       const filePath = data.filePath;
       
-      // Update the page content with the new file path
-      const currentPageContent = { ...content.pages[selectedPage] };
+      // Get current page data
+      const currentPageContent = getCurrentPageData();
       const fieldParts = fieldPath.split('.');
       
       if (fieldParts.length === 2) {
+        // Simple field: hero.image
         if (!currentPageContent[fieldParts[0]]) currentPageContent[fieldParts[0]] = {};
         currentPageContent[fieldParts[0]][fieldParts[1]] = filePath;
-      } else if (fieldParts.length === 3) {
-        const arrayName = fieldParts[0];
-        const index = parseInt(fieldParts[1]);
-        const property = fieldParts[2];
+      } 
+      else if (fieldParts.length === 3) {
+        const parentName = fieldParts[0];   // "gallery"
+        const childName = fieldParts[1];    // "images"
+        const indexOrProp = fieldParts[2];  // "0" or "image"
         
-        if (!currentPageContent[arrayName]) {
-          currentPageContent[arrayName] = [];
+        // Check if this is an array update (e.g., gallery.images.0)
+        if (currentPageContent[parentName] && Array.isArray(currentPageContent[parentName][childName])) {
+          // Update array at specific index
+          const arrayIndex = parseInt(indexOrProp);
+          if (!isNaN(arrayIndex)) {
+            if (!currentPageContent[parentName][childName]) {
+              currentPageContent[parentName][childName] = [];
+            }
+            currentPageContent[parentName][childName][arrayIndex] = filePath;
+          }
+        } else {
+          // Regular object property (e.g., predictableDeliveries.image)
+          if (!currentPageContent[parentName]) currentPageContent[parentName] = {};
+          currentPageContent[parentName][childName] = filePath;
         }
-        if (!currentPageContent[arrayName][index]) {
-          currentPageContent[arrayName][index] = {};
-        }
-        currentPageContent[arrayName][index][property] = filePath;
-      } else {
       }
       
       // Save to backend
@@ -345,12 +358,17 @@ const ContentEditor = () => {
       
       // Update local state
       const updatedContent = { ...content };
-      updatedContent.pages[selectedPage] = currentPageContent;
+      if (updatedContent.pages && updatedContent.pages[selectedPage]) {
+        updatedContent.pages[selectedPage] = currentPageContent;
+      } else {
+        updatedContent[selectedPage] = currentPageContent;
+      }
       setContent(updatedContent);
       
       setSaveMessage(`✅ ${data.fileType || 'File'} uploaded and saved successfully!`);
       setTimeout(() => setSaveMessage(''), 3000);
     } catch (error) {
+      console.error('Error uploading file:', error);
       setSaveMessage('❌ Failed to upload file. Please try again.');
       setTimeout(() => setSaveMessage(''), 3000);
     } finally {
@@ -368,29 +386,41 @@ const ContentEditor = () => {
     setSaving(true);
     
     try {
-      const currentPageContent = { ...content.pages[selectedPage] };
+      // Get the current complete page data
+      const currentPageContent = { ...content.pages[selectedPage] || content[selectedPage] };
       const fieldParts = editingField!.split('.');
       
+      // Update only the specific field
       if (fieldParts.length === 2) {
+        if (!currentPageContent[fieldParts[0]]) currentPageContent[fieldParts[0]] = {};
         currentPageContent[fieldParts[0]][fieldParts[1]] = editValue;
       } else if (fieldParts.length === 3) {
         const arrayName = fieldParts[0];
         const index = parseInt(fieldParts[1]);
         const property = fieldParts[2];
+        if (!currentPageContent[arrayName]) currentPageContent[arrayName] = [];
+        if (!currentPageContent[arrayName][index]) currentPageContent[arrayName][index] = {};
         currentPageContent[arrayName][index][property] = editValue;
       } else if (fieldParts.length === 1) {
         currentPageContent[fieldParts[0]] = editValue;
       }
       
+      // Send the COMPLETE page data, not just the changed field
       await contentAPI.updatePage(selectedPage, currentPageContent);
       
+      // Update local state
       const updatedContent = { ...content };
-      updatedContent.pages[selectedPage] = currentPageContent;
+      if (updatedContent.pages && updatedContent.pages[selectedPage]) {
+        updatedContent.pages[selectedPage] = currentPageContent;
+      } else {
+        updatedContent[selectedPage] = currentPageContent;
+      }
       setContent(updatedContent);
       setEditingField(null);
       setSaveMessage('✅ Content saved successfully!');
       setTimeout(() => setSaveMessage(''), 3000);
     } catch (error) {
+      console.error('Save error:', error);
       setSaveMessage('❌ Failed to save content');
       setTimeout(() => setSaveMessage(''), 3000);
     } finally {
@@ -702,17 +732,17 @@ const ContentEditor = () => {
 
     // Render Predictable Deliveries Section for Ocean Transport
     const renderPredictableDeliveriesSection = (page: any) => {
-    if (!page.predictableDeliveries) return null;
-    
-    return (
+      if (!page.predictableDeliveries) return null;
+      
+      return (
         <div className="mb-8">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Predictable Deliveries Section</h3>
-        {renderEditableField('Title', 'predictableDeliveries.title', page.predictableDeliveries.title || '')}
-        {renderEditableField('Description', 'predictableDeliveries.description', page.predictableDeliveries.description || '', true)}
-        {renderEditableField('Description 2', 'predictableDeliveries.description2', page.predictableDeliveries.description2 || '', true)}
-        {renderImageUpload('Image', 'predictableDeliveries.image', page.predictableDeliveries.image || '')}
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Predictable Deliveries Section</h3>
+          {renderEditableField('Title', 'predictableDeliveries.title', page.predictableDeliveries.title || '')}
+          {renderEditableField('Description', 'predictableDeliveries.description', page.predictableDeliveries.description || '', true)}
+          {renderEditableField('Description 2', 'predictableDeliveries.description2', page.predictableDeliveries.description2 || '', true)}
+          {renderImageUpload('Image', 'predictableDeliveries.image', page.predictableDeliveries.image || '')}
         </div>
-    );
+      );
     };
 
     // Render East-West Network Section for Ocean Transport

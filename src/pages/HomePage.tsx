@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from 'antd';
 import { PhoneOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { contentAPI } from '../services/api';
+import Navbar from '../components/Navbar';
 
 // ========== INTERFACE DEFINITIONS ==========
 interface HomeContent {
@@ -138,7 +139,8 @@ const HomePage = () => {
     <>
       {/* Hero Section with Maersk-style Curved Bottom Right */}
       <section className="relative h-[95vh] flex items-center justify-start overflow-hidden">
-        
+        <Navbar />
+                
         {/* Background Video with Curve */}
         <div 
           className="absolute inset-0 overflow-hidden"

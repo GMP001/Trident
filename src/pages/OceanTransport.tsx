@@ -63,7 +63,7 @@ const defaultContent: OceanTransportContent = {
     button2Text: "Ask prices"
   },
   gallery: {
-    title: "Our Fleet in Action",
+    title: "Our Services are in Action",
     images: [
       "/ship_under_dark-sky.jpg",
       "/ship-at_port-2.jpg",
@@ -299,7 +299,7 @@ const OceanTransport = () => {
 
       {/* Stats Section */}
       <section className="py-20 px-8 md:px-16 lg:px-24 bg-white">
-        <div className="max-w-7xl mx-auto" style={{ marginLeft: '300px' }}>
+        {/* <div className="max-w-7xl mx-auto" style={{ marginLeft: '300px' }}>
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             <div className="text-center p-6 bg-blue-50 rounded-lg">
               <h3 className="text-4xl font-bold text-blue-600 mb-2">500+</h3>
@@ -327,10 +327,10 @@ const OceanTransport = () => {
                 Find schedules
               </button>
             </div>
-          </div>
+          </div> */}
 
           {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-6 mt-16">
+          {/* <div className="grid md:grid-cols-3 gap-6 mt-16">
             <div className="text-center p-6 bg-white shadow-lg rounded-lg hover:shadow-xl transition-shadow">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -360,13 +360,13 @@ const OceanTransport = () => {
               <p className="text-gray-600">Track your cargo every step of the way</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
 
       {/* Predictable Deliveries Section */}
       <section className="relative py-24 px-8 md:px-16 lg:px-24 bg-gray-50">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
           style={{
             backgroundImage: `url(${getMediaUrl(content.predictableDeliveries.image)})`,
           }}
@@ -470,7 +470,7 @@ const OceanTransport = () => {
                   alt={`Gallery ${index + 1}`} 
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   onError={(e) => {
-                    e.currentTarget.src = '/ship_under_dark-sky.jpg';
+                    e.currentTarget.src = '/container_vessel_on_hot_sunny_day.jpg';
                   }}
                 />
               </div>
