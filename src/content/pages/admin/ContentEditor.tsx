@@ -316,28 +316,18 @@ const ContentEditor = () => {
         const data = await response.json();
         const filePath = data.filePath;
         
-        // Get current page data
         const currentPageContent = getCurrentPageData();
         const fieldParts = fieldPath.split('.');
         
-        // ===== Handle ALL field path depths =====
-        
         if (fieldParts.length === 2) {
-          // Simple field: hero.image, hero.video, servicesDescription.image
           const [section, field] = fieldParts;
-          if (!currentPageContent[section]) {
-            currentPageContent[section] = {};
-          }
+          if (!currentPageContent[section]) currentPageContent[section] = {};
           currentPageContent[section][field] = filePath;
         } 
         else if (fieldParts.length === 3) {
-          // Patterns:
-          // A) solutions.0.image → parent is array, middle is index
-          // B) predictableDeliveries.image → parent is object, middle is nested key
           const [parentName, indexStr, fieldName] = fieldParts;
           const arrayIndex = parseInt(indexStr);
           
-          // Case A: parent is an array (solutions, features, faqs)
           if (Array.isArray(currentPageContent[parentName])) {
             if (!isNaN(arrayIndex) && arrayIndex >= 0 && arrayIndex < currentPageContent[parentName].length) {
               currentPageContent[parentName][arrayIndex] = {
@@ -346,43 +336,31 @@ const ContentEditor = () => {
               };
             }
           } 
-          // Case B: nested object (predictableDeliveries.image, overview.speedAndFlexibility.image)
           else if (currentPageContent[parentName] && typeof currentPageContent[parentName] === 'object') {
-            // If the nested value is an object, PRESERVE its properties
             if (currentPageContent[parentName][indexStr] && typeof currentPageContent[parentName][indexStr] === 'object' && !Array.isArray(currentPageContent[parentName][indexStr])) {
               currentPageContent[parentName][indexStr] = {
                 ...currentPageContent[parentName][indexStr],
                 [fieldName]: filePath
               };
             } else {
-              // It's a simple value, just set it directly
               currentPageContent[parentName][indexStr] = filePath;
             }
           }
         }
         else if (fieldParts.length === 4) {
-          // Patterns:
-          // A) servicesOffer.services.0.image → parent.object, middle=array, indexOrField=index, field=prop
-          // B) whyChooseUs.benefits.0.title → same pattern
-          // C) overview.speedAndFlexibility.image → all nested objects (no arrays)
           const [parent, middle, indexOrField, field] = fieldParts;
           const arrayIndex = parseInt(indexOrField);
           
-          // Case A/B: middle is an ARRAY, indexOrField is the numeric index
-          // servicesOffer.services.0.image → parent=servicesOffer, middle=services[], indexOrField=0
           if (currentPageContent[parent] && Array.isArray(currentPageContent[parent][middle])) {
             if (!isNaN(arrayIndex) && arrayIndex >= 0 && arrayIndex < currentPageContent[parent][middle].length) {
-              // PRESERVE all existing properties of the array item
               currentPageContent[parent][middle][arrayIndex] = {
                 ...currentPageContent[parent][middle][arrayIndex],
                 [field]: filePath
               };
             }
           }
-          // Case C: all nested objects (e.g., someParent.someChild.image)
           else {
             if (!currentPageContent[parent]) currentPageContent[parent] = {};
-            // If the nested value is an object, PRESERVE its properties
             if (currentPageContent[parent][middle] && typeof currentPageContent[parent][middle] === 'object' && !Array.isArray(currentPageContent[parent][middle])) {
               currentPageContent[parent][middle] = {
                 ...currentPageContent[parent][middle],
@@ -395,8 +373,6 @@ const ContentEditor = () => {
           }
         }
         else if (fieldParts.length === 5) {
-          // Deeper nesting: section.subsection.arrayName.index.field
-          // e.g., someSection.subSection.items.0.image
           const [section, subsection, arrayName, indexStr, field] = fieldParts;
           const arrayIndex = parseInt(indexStr);
           
@@ -418,11 +394,35 @@ const ContentEditor = () => {
             currentPageContent[section][subsection][arrayName][indexStr] = filePath;
           }
         }
+        // ===== NEW: 6-part handling for deeply nested images (e.g., contractProducts.products.fixed.someArray.0.image) =====
+        else if (fieldParts.length === 6) {
+          // Pattern: p1.p2.p3.arrayName.index.field
+          // "contractProducts.products.fixed.someArray.0.image"
+          const [p1, p2, p3, arrayName, indexStr, field] = fieldParts;
+          const arrayIndex = parseInt(indexStr);
+          
+          if (!currentPageContent[p1]) currentPageContent[p1] = {};
+          if (!currentPageContent[p1][p2]) currentPageContent[p1][p2] = {};
+          if (!currentPageContent[p1][p2][p3]) currentPageContent[p1][p2][p3] = {};
+          
+          if (Array.isArray(currentPageContent[p1][p2][p3][arrayName])) {
+            if (!isNaN(arrayIndex) && arrayIndex >= 0) {
+              if (!currentPageContent[p1][p2][p3][arrayName][arrayIndex]) {
+                currentPageContent[p1][p2][p3][arrayName][arrayIndex] = {};
+              }
+              currentPageContent[p1][p2][p3][arrayName][arrayIndex] = {
+                ...currentPageContent[p1][p2][p3][arrayName][arrayIndex],
+                [field]: filePath
+              };
+            }
+          } else {
+            if (!currentPageContent[p1][p2][p3][arrayName]) currentPageContent[p1][p2][p3][arrayName] = {};
+            currentPageContent[p1][p2][p3][arrayName][indexStr] = filePath;
+          }
+        }
         
-        // Save to backend
         await contentAPI.updatePage(selectedPage, currentPageContent);
         
-        // Update local state
         const updatedContent = { ...content };
         if (!updatedContent.pages) {
           updatedContent.pages = {};
@@ -454,13 +454,10 @@ const ContentEditor = () => {
         const currentPageContent = getCurrentPageData();
         const fieldParts = editingField!.split('.');
         
-        // Update only the specific field
         if (fieldParts.length === 1) {
-          // e.g., "isActive"
           currentPageContent[fieldParts[0]] = editValue;
         }
         else if (fieldParts.length === 2) {
-          // Simple field: hero.title, cta.subtitle
           const [section, field] = fieldParts;
           if (!currentPageContent[section]) currentPageContent[section] = {};
           currentPageContent[section][field] = editValue;
@@ -468,8 +465,6 @@ const ContentEditor = () => {
         else if (fieldParts.length === 3) {
           const [parent, middle, last] = fieldParts;
           
-          // Check if parent is an array (e.g., faqs, features, solutions)
-          // Pattern: faqs.0.question → parent=faqs, middle=0(index), last=question
           if (Array.isArray(currentPageContent[parent])) {
             const index = parseInt(middle);
             if (!isNaN(index)) {
@@ -477,15 +472,12 @@ const ContentEditor = () => {
               currentPageContent[parent][index][last] = editValue;
             }
           } 
-          // Check if middle is an array (e.g., airFreight.points.0)
-          // Pattern: airFreight.points.0 → parent=airFreight, middle=points(array), last=0(index)
           else if (currentPageContent[parent] && Array.isArray(currentPageContent[parent][middle])) {
             const index = parseInt(last);
             if (!isNaN(index)) {
               currentPageContent[parent][middle][index] = editValue;
             }
           }
-          // Regular nested object: parent.middle.last
           else {
             if (!currentPageContent[parent]) currentPageContent[parent] = {};
             if (!currentPageContent[parent][middle]) currentPageContent[parent][middle] = {};
@@ -493,48 +485,44 @@ const ContentEditor = () => {
           }
         } 
         else if (fieldParts.length === 4) {
-          // ===== FIXED: Correct parsing for whyChooseUs.benefits.0.title =====
-          // Pattern: parent.arrayName.index.field
-          // "whyChooseUs.benefits.0.title"
-          //     [0]         [1]     [2]  [3]
-          //   parent     arrayName index field
-          
-          const parent = fieldParts[0];      // "whyChooseUs"
-          const arrayName = fieldParts[1];   // "benefits"
-          const indexStr = fieldParts[2];    // "0"
-          const field = fieldParts[3];       // "title"
+          const parent = fieldParts[0];
+          const arrayName = fieldParts[1];
+          const indexStr = fieldParts[2];
+          const field = fieldParts[3];
           
           const index = parseInt(indexStr);
           
           if (!isNaN(index)) {
-            // Ensure the parent object exists
-            if (!currentPageContent[parent]) {
-              currentPageContent[parent] = {};
-            }
-            // Ensure the array exists
-            if (!currentPageContent[parent][arrayName]) {
-              currentPageContent[parent][arrayName] = [];
-            }
-            // Ensure the array item exists
-            if (!currentPageContent[parent][arrayName][index]) {
-              currentPageContent[parent][arrayName][index] = {};
-            }
-            // Set the value
+            if (!currentPageContent[parent]) currentPageContent[parent] = {};
+            if (!currentPageContent[parent][arrayName]) currentPageContent[parent][arrayName] = [];
+            if (!currentPageContent[parent][arrayName][index]) currentPageContent[parent][arrayName][index] = {};
             currentPageContent[parent][arrayName][index][field] = editValue;
           }
         }
+        // ===== CHANGED: 5-part handling - now handles both patterns =====
         else if (fieldParts.length === 5) {
-          // Handle deeper nesting if needed in future
-          // e.g., section.subsection.arrayName.index.field
-          const [section, subsection, arrayName, indexStr, field] = fieldParts;
-          const index = parseInt(indexStr);
+          const [p1, p2, p3, p4, p5] = fieldParts;
           
-          if (!isNaN(index)) {
-            if (!currentPageContent[section]) currentPageContent[section] = {};
-            if (!currentPageContent[section][subsection]) currentPageContent[section][subsection] = {};
-            if (!currentPageContent[section][subsection][arrayName]) currentPageContent[section][subsection][arrayName] = [];
-            if (!currentPageContent[section][subsection][arrayName][index]) currentPageContent[section][subsection][arrayName][index] = {};
-            currentPageContent[section][subsection][arrayName][index][field] = editValue;
+          // Check if p4 is an array at that depth (e.g., contractProducts.products.fixed.features.0)
+          // p1=contractProducts, p2=products, p3=fixed, p4=features(array), p5=0(index)
+          if (currentPageContent[p1]?.[p2]?.[p3] && Array.isArray(currentPageContent[p1][p2][p3][p4])) {
+            const index = parseInt(p5);
+            if (!isNaN(index)) {
+              // It's a string array (like features), set the value directly
+              currentPageContent[p1][p2][p3][p4][index] = editValue;
+            }
+          }
+          // Original pattern: p3 is array, p4 is index, p5 is field
+          // e.g., someSection.subSection.items.0.title
+          else {
+            const index = parseInt(p4);
+            if (!isNaN(index)) {
+              if (!currentPageContent[p1]) currentPageContent[p1] = {};
+              if (!currentPageContent[p1][p2]) currentPageContent[p1][p2] = {};
+              if (!currentPageContent[p1][p2][p3]) currentPageContent[p1][p2][p3] = [];
+              if (!currentPageContent[p1][p2][p3][index]) currentPageContent[p1][p2][p3][index] = {};
+              currentPageContent[p1][p2][p3][index][p5] = editValue;
+            }
           }
         }
         

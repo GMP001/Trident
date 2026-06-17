@@ -539,7 +539,7 @@ const HomePage = () => {
                     <p className="text-sm text-gray-600">Ship boxes and pallets via ocean with LCL. Book online and get prices instantly.</p>
                   </div>
                 </a>
-                <a href="/special-shipment" className="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 w-80 flex-shrink-0">
+                <a href="/special-cargo" className="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 w-80 flex-shrink-0">
                   <div className="w-full h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
                     <img src="/special_cargo_handling.jpg" alt="Special Cargo Shipment" className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" />
                   </div>
