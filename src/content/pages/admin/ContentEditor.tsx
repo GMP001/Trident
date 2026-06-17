@@ -186,7 +186,7 @@ const ContentEditor = () => {
         return ['hero', 'buildSupplyChain', 'whyTrident', 'servicesOffer', 'wmsSupport', 'cta'];
     }
       if (pageId === 'depot') {
-        return ['hero', 'overview', 'services', 'contact'];
+        return ['hero', 'overview', 'services', 'contact', 'cta'];
     }
     if (pageId === 'cold-storage') {
       return ['hero', 'benefits', 'advantages', 'contact', 'cta'];
@@ -320,10 +320,10 @@ const ContentEditor = () => {
         const currentPageContent = getCurrentPageData();
         const fieldParts = fieldPath.split('.');
         
-        // ===== FIXED: Handle different field path depths =====
+        // ===== Handle ALL field path depths =====
         
         if (fieldParts.length === 2) {
-          // Simple field: hero.image, servicesDescription.image, hero.video
+          // Simple field: hero.image, hero.video, servicesDescription.image
           const [section, field] = fieldParts;
           if (!currentPageContent[section]) {
             currentPageContent[section] = {};
@@ -331,31 +331,92 @@ const ContentEditor = () => {
           currentPageContent[section][field] = filePath;
         } 
         else if (fieldParts.length === 3) {
+          // Patterns:
+          // A) solutions.0.image → parent is array, middle is index
+          // B) predictableDeliveries.image → parent is object, middle is nested key
           const [parentName, indexStr, fieldName] = fieldParts;
           const arrayIndex = parseInt(indexStr);
           
-          // Check if parent is an array (e.g., solutions, features, faqs)
+          // Case A: parent is an array (solutions, features, faqs)
           if (Array.isArray(currentPageContent[parentName])) {
-            // It's an array of objects: solutions.0.image, faqs.1.question
             if (!isNaN(arrayIndex) && arrayIndex >= 0 && arrayIndex < currentPageContent[parentName].length) {
-              // Update the specific field within the array object
-              // IMPORTANT: Preserve all existing properties of that object!
               currentPageContent[parentName][arrayIndex] = {
                 ...currentPageContent[parentName][arrayIndex],
                 [fieldName]: filePath
               };
             }
-          } else if (currentPageContent[parentName] && typeof currentPageContent[parentName] === 'object') {
-            // It's a nested object: predictableDeliveries.image
-            currentPageContent[parentName][indexStr] = filePath;
+          } 
+          // Case B: nested object (predictableDeliveries.image, overview.speedAndFlexibility.image)
+          else if (currentPageContent[parentName] && typeof currentPageContent[parentName] === 'object') {
+            // If the nested value is an object, PRESERVE its properties
+            if (currentPageContent[parentName][indexStr] && typeof currentPageContent[parentName][indexStr] === 'object' && !Array.isArray(currentPageContent[parentName][indexStr])) {
+              currentPageContent[parentName][indexStr] = {
+                ...currentPageContent[parentName][indexStr],
+                [fieldName]: filePath
+              };
+            } else {
+              // It's a simple value, just set it directly
+              currentPageContent[parentName][indexStr] = filePath;
+            }
           }
         }
         else if (fieldParts.length === 4) {
-          // Deeper nesting: e.g., overview.speedAndFlexibility.image
-          const [section, subsection, subsubsection, field] = fieldParts;
+          // Patterns:
+          // A) servicesOffer.services.0.image → parent.object, middle=array, indexOrField=index, field=prop
+          // B) whyChooseUs.benefits.0.title → same pattern
+          // C) overview.speedAndFlexibility.image → all nested objects (no arrays)
+          const [parent, middle, indexOrField, field] = fieldParts;
+          const arrayIndex = parseInt(indexOrField);
+          
+          // Case A/B: middle is an ARRAY, indexOrField is the numeric index
+          // servicesOffer.services.0.image → parent=servicesOffer, middle=services[], indexOrField=0
+          if (currentPageContent[parent] && Array.isArray(currentPageContent[parent][middle])) {
+            if (!isNaN(arrayIndex) && arrayIndex >= 0 && arrayIndex < currentPageContent[parent][middle].length) {
+              // PRESERVE all existing properties of the array item
+              currentPageContent[parent][middle][arrayIndex] = {
+                ...currentPageContent[parent][middle][arrayIndex],
+                [field]: filePath
+              };
+            }
+          }
+          // Case C: all nested objects (e.g., someParent.someChild.image)
+          else {
+            if (!currentPageContent[parent]) currentPageContent[parent] = {};
+            // If the nested value is an object, PRESERVE its properties
+            if (currentPageContent[parent][middle] && typeof currentPageContent[parent][middle] === 'object' && !Array.isArray(currentPageContent[parent][middle])) {
+              currentPageContent[parent][middle] = {
+                ...currentPageContent[parent][middle],
+                [field]: filePath
+              };
+            } else {
+              if (!currentPageContent[parent][middle]) currentPageContent[parent][middle] = {};
+              currentPageContent[parent][middle][field] = filePath;
+            }
+          }
+        }
+        else if (fieldParts.length === 5) {
+          // Deeper nesting: section.subsection.arrayName.index.field
+          // e.g., someSection.subSection.items.0.image
+          const [section, subsection, arrayName, indexStr, field] = fieldParts;
+          const arrayIndex = parseInt(indexStr);
+          
           if (!currentPageContent[section]) currentPageContent[section] = {};
           if (!currentPageContent[section][subsection]) currentPageContent[section][subsection] = {};
-          currentPageContent[section][subsection][field] = filePath;
+          
+          if (Array.isArray(currentPageContent[section][subsection][arrayName])) {
+            if (!isNaN(arrayIndex) && arrayIndex >= 0) {
+              if (!currentPageContent[section][subsection][arrayName][arrayIndex]) {
+                currentPageContent[section][subsection][arrayName][arrayIndex] = {};
+              }
+              currentPageContent[section][subsection][arrayName][arrayIndex] = {
+                ...currentPageContent[section][subsection][arrayName][arrayIndex],
+                [field]: filePath
+              };
+            }
+          } else {
+            if (!currentPageContent[section][subsection][arrayName]) currentPageContent[section][subsection][arrayName] = {};
+            currentPageContent[section][subsection][arrayName][indexStr] = filePath;
+          }
         }
         
         // Save to backend
