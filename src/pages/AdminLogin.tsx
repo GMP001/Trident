@@ -1,3 +1,5 @@
+//D:/Trident Log/Trident-FE/src/pages/AdminLogin.tsx
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authAPI } from './../services/api';
