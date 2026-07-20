@@ -6,6 +6,8 @@ import Footer from '../../src/pages/Footer';
 import { PlusOutlined, MinusOutlined, ClockCircleOutlined, SafetyCertificateOutlined, EyeOutlined, GlobalOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import LazyVideo from '../pages/LazyVideo';
+import LazyImage from '../pages/LazyImage';
 
 // ========== INTERFACE DEFINITIONS ==========
 interface HomeContent {
@@ -205,44 +207,39 @@ const HomePage = () => {
           }}
         >
           {content.hero.image && (content.hero.image.endsWith('.mp4') || content.hero.image.endsWith('.webm') || content.hero.image.endsWith('.mov')) ? (
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              key={content.hero.image}
+            <LazyVideo
+              src={getMediaUrl(content.hero.image)}
               className="absolute inset-0 w-full h-full object-cover"
               style={{
                 borderBottomRightRadius: '60px',
                 borderBottomLeftRadius: '60px',
               }}
-            >
-              <source src={getMediaUrl(content.hero.image)} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            />
           ) : (
-            <img
+            <LazyImage
               src={getMediaUrl(content.hero.image)}
               alt="Hero Background"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full"
               style={{
                 borderBottomRightRadius: '60px',
                 borderBottomLeftRadius: '60px',
               }}
-              onError={(e) => {
+              onError={(e: any) => {
                 console.error('Hero image failed to load:', content.hero.image);
                 e.currentTarget.src = '/Hero-Video.mp4';
               }}
             />
           )}
-          {/* Dark Overlay */}
+          
+          {/* Gradient Overlay - Dark on left, transparent on right */}
           <div 
-            className="absolute inset-0 bg-black/55" 
+            className="absolute inset-0"
             style={{ 
               borderBottomRightRadius: '60px',
               borderBottomLeftRadius: '60px',
+              background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
             }} 
-          /> 
+          />
         </div>
 
         {/* Sky Blue Thick Border - Full Width */}
@@ -313,39 +310,33 @@ const HomePage = () => {
                 borderBottomLeftRadius: '60px',
               }}
             >
-            {content.beReady.video && (content.beReady.video.endsWith('.mp4') || content.beReady.video.endsWith('.webm')) ? (
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                key={content.beReady.video}
-                className="w-full h-auto object-cover"
-                style={{
-                  borderTopRightRadius: '60px',
-                  borderTopLeftRadius: '60px',
-                  borderBottomRightRadius: '60px',
-                  borderBottomLeftRadius: '60px',
-                }}
-              >
-                <source src={getMediaUrl(content.beReady.video)} type="video/mp4" />
-              </video>
-            ) : (
-              <img
-                src={getMediaUrl(content.beReady.video)}
-                alt="Be Ready"
-                className="w-full h-auto object-cover"
-                style={{
-                  borderTopRightRadius: '60px',
-                  borderTopLeftRadius: '60px',
-                  borderBottomRightRadius: '60px',
-                  borderBottomLeftRadius: '60px',
-                }}
-                onError={(e) => {
-                  e.currentTarget.src = '/be_ready.mp4';
-                }}
-              />
-            )}
+              {content.beReady.video && (content.beReady.video.endsWith('.mp4') || content.beReady.video.endsWith('.webm')) ? (
+                <LazyVideo
+                  src={getMediaUrl(content.beReady.video)}
+                  className="w-full h-auto object-cover"
+                  style={{
+                    borderTopRightRadius: '60px',
+                    borderTopLeftRadius: '60px',
+                    borderBottomRightRadius: '60px',
+                    borderBottomLeftRadius: '60px',
+                  }}
+                />
+              ) : (
+                <LazyImage
+                  src={getMediaUrl(content.beReady.video)}
+                  alt="Be Ready"
+                  className="w-full h-auto object-cover"
+                  style={{
+                    borderTopRightRadius: '60px',
+                    borderTopLeftRadius: '60px',
+                    borderBottomRightRadius: '60px',
+                    borderBottomLeftRadius: '60px',
+                  }}
+                  onError={(e: any) => {
+                    e.currentTarget.src = '/be_ready.mp4';
+                  }}
+                />
+              )}
             </div>
 
             <div 
@@ -403,7 +394,12 @@ const HomePage = () => {
                 <div key={index} className="w-[350px] h-[350px]">
                   <a href={card.link} className="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 h-full">
                     <div className="w-full h-[60%] bg-gray-100 flex items-center justify-center overflow-hidden">
-                      <img src={getMediaUrl(card.image)} alt={card.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <LazyImage 
+                        src={getMediaUrl(card.image)} 
+                        alt={card.title} 
+                        className="w-full h-full"
+                        style={{ objectFit: 'cover' }}
+                      />
                     </div>
                     <div className="p-4 h-[40%] flex flex-col justify-center">
                       <h3 className="text-[22px] font-semibold text-sky-500 mb-1">{card.title}</h3>
@@ -462,31 +458,35 @@ const HomePage = () => {
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="flex items-center gap-16 flex-shrink-0">
                   <div className="flex items-center justify-center h-32 w-48">
-                    <img 
+                    <LazyImage 
                       src="/IATA_Logo.png" 
                       alt="IATA Logo" 
-                      className="h-full w-auto object-contain"
+                      className="h-full w-auto"
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                   <div className="flex items-center justify-center h-32 w-48">
-                    <img 
+                    <LazyImage 
                       src="/IATA_Logo-2.png" 
                       alt="IATA Logo" 
-                      className="h-full w-auto object-contain"
+                      className="h-full w-auto"
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                   <div className="flex items-center justify-center h-32 w-48">
-                    <img 
+                    <LazyImage 
                       src="/IATA_Logo_3.png" 
                       alt="IATA Logo" 
-                      className="h-full w-auto object-contain"
+                      className="h-full w-auto"
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                   <div className="flex items-center justify-center h-32 w-48">
-                    <img 
+                    <LazyImage 
                       src="/IATA_Logo_4.png" 
                       alt="IATA Logo" 
-                      className="h-full w-auto object-contain"
+                      className="h-full w-auto"
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                 </div>

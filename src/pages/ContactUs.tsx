@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { contentAPI } from '../services/api';
 import Navbar from '../components/Navbar';
 import Footer from './Footer';
+import LazyVideo from '../pages/LazyVideo';
 
 interface ContactContent {
   isActive: boolean;
@@ -167,15 +168,28 @@ const ContactUs = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative h-[78vh] flex items-center justify-start overflow-hidden mt-[150px]">
+      <section className="relative h-[78vh] flex items-center justify-end overflow-hidden mt-[150px]">
         <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-            <source src={gm(content.hero.media || '/contact_us_2.mp4')} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/50"></div>
+          <LazyVideo
+            src={gm(content.hero.media || '/contact_us_2.mp4')}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
+          />
+          
+          {/* Gradient Overlay - Dark on right, transparent on left */}
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              borderBottomRightRadius: '60px',
+              borderBottomLeftRadius: '60px',
+              background: 'linear-gradient(to left, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
+            }} 
+          />
         </div>
+        
         <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-        <div className="relative z-10 w-full" style={{ paddingLeft: '200px' }}>
+        
+        <div className="relative z-10 w-full text-right" style={{ paddingRight: '180px' }}>
           <h1 className="text-[72px] text-white font-bold leading-tight">Contact Us</h1>
         </div>
       </section>

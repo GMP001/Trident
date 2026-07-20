@@ -4,6 +4,8 @@ import { contentAPI } from '../services/api';
 import Navbar from '../components/Navbar';
 import Footer from '../../src/pages/Footer';
 import { motion } from 'framer-motion';
+import LazyVideo from '../pages/LazyVideo';
+import LazyImage from '../pages/LazyImage';
 
 interface Segment {
   id?: string;
@@ -69,13 +71,26 @@ const OceanFreight = () => {
       {/* Hero */}
       <section className="relative h-[78vh] flex items-center justify-start overflow-hidden mt-[150px]">
         <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-            <source src={gm(content.hero.media || '/ocean_freight.mp4')} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/50"></div>
+          <LazyVideo
+            src={gm(content.hero.media || '/ocean_freight.mp4')}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
+          />
+          
+          {/* Gradient Overlay - Dark on left, transparent on right */}
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              borderBottomRightRadius: '60px',
+              borderBottomLeftRadius: '60px',
+              background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
+            }} 
+          />
         </div>
+        
         <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-        <div className="relative z-10 w-full" style={{ paddingLeft: '100px' }}>
+        
+        <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
           <h1 className="text-[72px] text-white font-bold leading-tight">Services</h1>
         </div>
       </section>
@@ -105,7 +120,12 @@ const OceanFreight = () => {
                 )}
                 <div className="flex items-center justify-center">
                   <div className="rounded-lg overflow-hidden shadow-xl w-full">
-                    <img src={gm(segment.image)} alt={segment.title} className="w-full h-auto object-cover" />
+                    <LazyImage 
+                      src={gm(segment.image)} 
+                      alt={segment.title} 
+                      className="w-full h-auto"
+                      style={{ objectFit: 'cover' }}
+                    />
                   </div>
                 </div>
                 {isLeft && (

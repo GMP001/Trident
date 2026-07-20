@@ -12,6 +12,7 @@ const Footer = () => {
               src="/Trident-Global-Logistics-Limited-LOGO-White.png" 
               alt="Trident Global Logistics Limited" 
               style={{ height: '300px', width: 'auto' }}
+              className="transition-all duration-300 hover:brightness-0 hover:invert hover:saturate-[.75] hover:hue-rotate-[358deg] hover:sepia-[.75]"
             />
           </div>
 
@@ -20,7 +21,7 @@ const Footer = () => {
             
             {/* Dhaka Office */}
             <div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">Dhaka Office</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-[#FFD700]">Dhaka Office</h3>
               <div className="space-y-2 text-lg text-gray-400">
                 <p className="font-semibold text-white text-xl">Trident Global Logistics Limited</p>
                 <p>Le Meridien Hotel (Commercial Space)</p>
@@ -38,7 +39,7 @@ const Footer = () => {
 
             {/* Chittagong Office */}
             <div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">Chittagong Office</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-[#FFD700]">Chittagong Office</h3>
               <div className="space-y-2 text-lg text-gray-400">
                 <p className="font-semibold text-white text-xl">Trident Global Logistics Limited</p>
                 <p>3072 Shek Mujib Road</p>
@@ -48,7 +49,7 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">Quick Links</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-[#FFD700]">Quick Links</h3>
               <ul className="space-y-2">
                 <li><a href="/" className="text-gray-400 hover:text-white transition-colors text-lg">Home</a></li>
                 <li><a href="/about" className="text-gray-400 hover:text-white transition-colors text-lg">About Us</a></li>
@@ -62,16 +63,16 @@ const Footer = () => {
 
           {/* Social Media Icons - Far Right, Vertical */}
           <div className="flex-shrink-0 flex flex-col items-center gap-5">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" title="Facebook">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FFD700] transition-colors" title="Facebook">
               <FacebookOutlined style={{ fontSize: '28px' }} />
             </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" title="YouTube">
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FFD700] transition-colors" title="YouTube">
               <YoutubeOutlined style={{ fontSize: '28px' }} />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" title="Instagram">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FFD700] transition-colors" title="Instagram">
               <InstagramOutlined style={{ fontSize: '28px' }} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" title="LinkedIn">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FFD700] transition-colors" title="LinkedIn">
               <LinkedinOutlined style={{ fontSize: '28px' }} />
             </a>
           </div>

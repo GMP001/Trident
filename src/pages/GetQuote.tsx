@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from './Footer';
+import LazyVideo from '../pages/LazyVideo';
 
 const GetQuote = () => {
   const [formData, setFormData] = useState({
@@ -75,22 +76,26 @@ const handleSubmit = async (e: React.FormEvent) => {
           borderBottomRightRadius: '60px',
           borderBottomLeftRadius: '60px',
         }}>
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
+          <LazyVideo
+            src="/get_a_quote.mp4"
             className="absolute inset-0 w-full h-full object-cover"
             style={{
               borderBottomRightRadius: '60px',
               borderBottomLeftRadius: '60px',
             }}
-          >
-            <source src="/get_a_quote.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="absolute inset-0 bg-black/50"></div>
+          />
+          
+          {/* Gradient Overlay - Dark on left, transparent on right */}
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              borderBottomRightRadius: '60px',
+              borderBottomLeftRadius: '60px',
+              background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
+            }} 
+          />
         </div>
+        
         <div 
           className="absolute bottom-0 left-0 right-0 pointer-events-none"
           style={{
@@ -101,10 +106,11 @@ const handleSubmit = async (e: React.FormEvent) => {
             zIndex: 5,
           }}
         />
+        
         {/* Title */}
-        <div className="relative z-10 w-full" style={{ paddingLeft: '200px' }}>
+        <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
           <h1 className="text-[72px] text-white font-bold leading-tight">
-            Get a Quoted
+            Get a Quote
           </h1>
         </div>
       </section>

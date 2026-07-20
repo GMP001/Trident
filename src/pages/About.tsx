@@ -9,6 +9,8 @@ import {
   UserOutlined, 
   EyeOutlined 
 } from '@ant-design/icons';
+import LazyVideo from '../pages/LazyVideo';
+import LazyImage from '../pages/LazyImage';
 
 const defaultContent = {
   isActive: true,
@@ -139,13 +141,26 @@ const About = () => {
       {/* Hero */}
       <section className="relative h-[78vh] flex items-center justify-start overflow-hidden mt-[150px]">
         <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-            <source src="/About_US_Latest.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/50"></div>
+          <LazyVideo
+            src="/About_US_Latest.mp4"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
+          />
+          
+          {/* Gradient Overlay - Dark on left, transparent on right */}
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              borderBottomRightRadius: '60px',
+              borderBottomLeftRadius: '60px',
+              background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
+            }} 
+          />
         </div>
+        
         <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-        <div className="relative z-10 w-full" style={{ paddingLeft: '100px' }}>
+        
+        <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
           <h1 className="text-[72px] text-white font-bold leading-tight">About Us</h1>
         </div>
       </section>
@@ -161,7 +176,12 @@ const About = () => {
             </div>
             <div className="flex items-stretch">
               <div className="rounded-lg overflow-hidden shadow-lg w-full">
-                <img src={getImageUrl(content.purpose.image || "/corporate_leaders_in_serious_mood.jpg")} alt="Global Logistics" className="w-full h-full object-cover" />
+                <LazyImage 
+                  src={getImageUrl(content.purpose.image || "/corporate_leaders_in_serious_mood.jpg")} 
+                  alt="Global Logistics" 
+                  className="w-full h-full"
+                  style={{ objectFit: 'cover' }}
+                />
               </div>
             </div>
           </div>
@@ -216,7 +236,12 @@ const About = () => {
             </div>
             <div className="flex items-stretch">
               <div className="rounded-lg overflow-hidden shadow-xl w-full">
-                <img src={getImageUrl('/core_values.jpg')} alt="Our Values" className="w-full h-full object-cover" />
+                <LazyImage 
+                  src={getImageUrl('/core_values.jpg')} 
+                  alt="Our Values" 
+                  className="w-full h-full"
+                  style={{ objectFit: 'cover' }}
+                />
               </div>
             </div>
           </div>
@@ -237,7 +262,12 @@ const About = () => {
                 <div className="grid md:grid-cols-2 gap-0">
                   <div className={`h-80 md:h-96 bg-gradient-to-br ${leader.gradient} flex items-center justify-center p-8 ${leader.reverse ? 'order-1 md:order-2' : ''}`}>
                     <div className="w-64 h-64 bg-white shadow-xl flex items-center justify-center overflow-hidden">
-                      <img src={getImageUrl(leader.image)} alt={leader.name} className="w-full h-full object-cover" />
+                      <LazyImage 
+                        src={getImageUrl(leader.image)} 
+                        alt={leader.name} 
+                        className="w-full h-full"
+                        style={{ objectFit: 'cover' }}
+                      />
                     </div>
                   </div>
                   <div className={`p-10 flex flex-col justify-center ${leader.reverse ? 'order-2 md:order-1' : ''}`}>
@@ -258,7 +288,12 @@ const About = () => {
         <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
           <div className="grid md:grid-cols-2 gap-16 items-start">
             <div className="relative h-96 rounded-lg overflow-hidden shadow-xl order-2 md:order-1">
-              <img src={getImageUrl(content.sustainability.image)} alt="Sustainability" className="w-full h-full object-cover" />
+              <LazyImage 
+                src={getImageUrl(content.sustainability.image)} 
+                alt="Sustainability" 
+                className="w-full h-full"
+                style={{ objectFit: 'cover' }}
+              />
             </div>
             <div className="order-1 md:order-2">
               <h2 className="text-3xl md:text-4xl text-gray-900 mb-6 font-light">{content.sustainability.title}</h2>

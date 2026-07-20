@@ -20,6 +20,8 @@ import {
   PlusOutlined,
   MinusOutlined
 } from '@ant-design/icons';
+import LazyVideo from '../pages/LazyVideo';
+import LazyImage from '../pages/LazyImage';
 
 // Icon mapping to components
 const iconMap: { [key: string]: any } = {
@@ -146,13 +148,26 @@ const Careers = () => {
       {/* Hero Section */}
       <section className="relative h-[78vh] flex items-center justify-start overflow-hidden mt-[150px]">
         <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-            <source src={gm(content.hero.media || '/careers.mp4')} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/50"></div>
+          <LazyVideo
+            src={gm(content.hero.media || '/careers.mp4')}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
+          />
+          
+          {/* Gradient Overlay - Dark on left, transparent on right */}
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              borderBottomRightRadius: '60px',
+              borderBottomLeftRadius: '60px',
+              background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
+            }} 
+          />
         </div>
+        
         <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-        <div className="relative z-10 w-full" style={{ paddingLeft: '100px' }}>
+        
+        <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
           <h1 className="text-[72px] text-white font-bold leading-tight">Careers</h1>
         </div>
       </section>
@@ -221,7 +236,12 @@ const Careers = () => {
             </div>
             <div className="flex items-center justify-center">
               <motion.div className="rounded-lg overflow-hidden shadow-xl w-full" initial={{ opacity: 0, x: 300 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <img src={gm(content.faqSection.image)} alt="Careers" className="w-full h-auto object-cover" />
+                <LazyImage 
+                  src={gm(content.faqSection.image)} 
+                  alt="Careers" 
+                  className="w-full h-auto"
+                  style={{ objectFit: 'cover' }}
+                />
               </motion.div>
             </div>
           </div>
@@ -243,7 +263,12 @@ const Careers = () => {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="flex items-center justify-center">
               <motion.div className="rounded-lg overflow-hidden shadow-xl w-full" initial={{ opacity: 0, x: -300 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, ease: "easeOut" }}>
-                <img src={gm(content.whyWork.image)} alt="Why work at Trident" className="w-full h-auto object-cover" />
+                <LazyImage 
+                  src={gm(content.whyWork.image)} 
+                  alt="Why work at Trident" 
+                  className="w-full h-auto"
+                  style={{ objectFit: 'cover' }}
+                />
               </motion.div>
             </div>
             <div>
