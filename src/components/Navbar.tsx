@@ -67,10 +67,10 @@ const Navbar = () => {
         
         {/* Logo - Now Clickable */}
         <Link to="/" className="relative">
-          <div className="absolute inset-0 bg-black/40 rounded-lg -m-3 p-3"></div>
+          <div className="absolute inset-0 bg-[#4c6860] rounded-lg -m-3 p-3"></div>
           <div className="relative">
             <img 
-              src="/Trident-Global-Logistics-Limited-LOGO-black.png" 
+              src="/Trident-Global-Logistics-Limited-LOGO-White.png" 
               alt="Trident Global Logistics Ltd." 
               className="h-28 w-auto cursor-pointer"
             />

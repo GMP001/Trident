@@ -262,7 +262,7 @@ const About = () => {
                     />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
-                    style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
+                    style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
                 <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
                     <h1 className="text-[72px] text-white font-bold leading-tight">About Us</h1>
                 </div>
@@ -274,8 +274,8 @@ const About = () => {
                     <div className="grid md:grid-cols-2 gap-12 mb-8">
                         <div>
                             <h2 className="text-[100px] text-gray-900 leading-tight mb-2 font-light">{content.purpose.heading}</h2>
-                            <p className="text-[42px] text-sky-500 leading-tight mb-4 font-light">{content.purpose.subtitle}</p>
-                            <div className="w-36 h-0.5 bg-blue-500"></div>
+                            <p className="text-[42px] text-[#4c6860] leading-tight mb-4 font-light">{content.purpose.subtitle}</p>
+                            <div className="w-36 h-0.5 bg-[#4c6860]"></div>
                         </div>
                         <div className="flex items-stretch">
                             <div className="rounded-lg overflow-hidden shadow-lg w-full">
@@ -306,11 +306,11 @@ const About = () => {
                         <p className="text-xl text-gray-600 leading-relaxed mb-8">{content.vision.description}</p>
                     </div>
                     <div className="mb-12">
-                        <h3 className="text-[36px] text-sky-500 leading-tight mb-4 font-bold">Our Vision</h3>
+                        <h3 className="text-[36px] text-[#4c6860] leading-tight mb-4 font-bold">Our Vision</h3>
                         <p className="text-xl text-gray-600 leading-relaxed">{content.vision.visionStatement}</p>
                     </div>
                     <div className="mb-12">
-                        <h3 className="text-[36px] text-sky-500 leading-tight mb-4 font-bold">Our Mission</h3>
+                        <h3 className="text-[36px] text-[#4c6860] leading-tight mb-4 font-bold">Our Mission</h3>
                         <p className="text-xl text-gray-600 leading-relaxed">{content.vision.missionStatement}</p>
                     </div>
                 </div>
@@ -322,15 +322,15 @@ const About = () => {
                     style={{ backgroundImage: `url(${getMediaUrl('/core_values.jpg')})` }}></div>
                 <div className="relative z-10 w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl text-sky-500 mb-4 font-light">Our values connect us and guide us</h2>
-                        <div className="w-20 h-0.5 bg-blue-500 mx-auto"></div>
+                        <h2 className="text-3xl md:text-4xl text-[#4c6860] mb-4 font-light">Our values connect us and guide us</h2>
+                        <div className="w-20 h-0.5 bg-[#4c6860] mx-auto"></div>
                         <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">Our values inspire us to do better in a constantly changing world, guiding our work every day.</p>
                     </div>
                     <div className="grid md:grid-cols-2 gap-16 items-stretch">
                         <div className="space-y-8 flex flex-col justify-center">
                             {content.values.map((value, index) => (
                                 <div key={index} className="flex items-start gap-6 group">
-                                    <div className="flex-shrink-0 w-16 h-16 bg-sky-500 rounded-full flex items-center justify-center group-hover:bg-sky-600 transition-colors">
+                                <div className="flex-shrink-0 w-16 h-16 bg-[#4c6860] rounded-full flex items-center justify-center group-hover:bg-[#006666] transition-colors">
                                         {valueIcons[index] || valueIcons[0]}
                                     </div>
                                     <div className="flex-1">
@@ -359,27 +359,28 @@ const About = () => {
                 <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                     <div className="text-center mb-16">
                         <h1 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">{content.leadership.title}</h1>
-                        <div className="w-20 h-0.5 bg-blue-500 mx-auto mb-8"></div>
+                        <div className="w-20 h-0.5 bg-[#4c6860] mx-auto mb-8"></div>
                         <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">{content.leadership.description}</p>
                     </div>
                     <div className="space-y-12">
                         {content.leadership.leaders.map((leader, i) => (
-                            <div key={i} className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-blue-200">
+                            <div key={i} className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-[#4c6860]/30">
                                 <div className="grid md:grid-cols-2 gap-0">
                                     <div className={`h-80 md:h-96 bg-gradient-to-br ${leader.gradient} flex items-center justify-center p-8 ${leader.reverse ? 'order-1 md:order-2' : ''}`}>
-                                        <div className="w-64 h-64 bg-white shadow-xl flex items-center justify-center overflow-hidden">
+                                        {/* Added border-4 and border-[#4c6860] here */}
+                                        <div className="w-64 h-64 bg-white shadow-xl rounded-full flex items-center justify-center overflow-hidden border-2 border-[#4c6860]">
                                             <LazyImage
                                                 src={getMediaUrl(leader.image)}
                                                 alt={leader.name}
                                                 className="w-full h-full"
-                                                style={{ objectFit: 'cover' }}
+                                                style={{ objectFit: 'contain' }}
                                             />
                                         </div>
                                     </div>
                                     <div className={`p-10 flex flex-col justify-center ${leader.reverse ? 'order-2 md:order-1' : ''}`}>
                                         <h3 className="text-3xl font-semibold text-gray-900 mb-2">{leader.name}</h3>
-                                        <p className="text-sky-500 font-medium text-lg mb-4">{leader.title}</p>
-                                        <div className="w-16 h-0.5 bg-blue-500 mb-6"></div>
+                                        <p className="text-[#4c6860] font-medium text-lg mb-4">{leader.title}</p>
+                                        <div className="w-16 h-0.5 bg-[#4c6860] mb-6"></div>
                                         <p className="text-gray-600 text-lg leading-relaxed">{leader.description}</p>
                                     </div>
                                 </div>
@@ -414,7 +415,7 @@ const About = () => {
                 <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">{content.offices.title}</h2>
-                        <div className="w-20 h-0.5 bg-blue-500 mx-auto mb-8"></div>
+                        <div className="w-20 h-0.5 bg-[#4c6860] mx-auto mb-8"></div>
                         <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">{content.offices.description}</p>
                     </div>
                     <div className="grid md:grid-cols-2 gap-16 items-start">
@@ -425,13 +426,13 @@ const About = () => {
                             </div>
                             <div className="mt-8 space-y-3">
                                 <div className="flex items-center gap-3 text-gray-600">
-                                    <svg className="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5 text-[#4c6860]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                     </svg>
                                     <span>{content.offices.phone}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-600">
-                                    <svg className="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5 text-[#4c6860]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                     <span>{content.offices.email}</span>

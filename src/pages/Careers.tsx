@@ -62,7 +62,7 @@ interface CareerContent {
 // ============================================================
 const defaultContent: CareerContent = {
     isActive: true,
-    hero: { media: '/careers.mp4' },
+    hero: { media: '/careers_hero.jpg' },
     intro: {
         title: 'Be Part of the Global Trade Journey.',
         description: "At Trident Global Logistics Limited, we do more than deliver cargo — we create opportunities. We're building a workplace where driven professionals can accelerate their careers, expand their global perspective, and make a meaningful impact in the fast-evolving world of logistics."
@@ -224,7 +224,7 @@ const Careers = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4c6860]"></div>
             </div>
         );
     }
@@ -238,12 +238,22 @@ const Careers = () => {
 
             {/* Hero */}
             <section className="relative h-[78vh] flex items-center justify-start overflow-hidden mt-[150px]">
-                <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-                    <LazyVideo
-                        src={getMediaUrl(content.hero.media || '/careers.mp4')}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
-                    />
+                <div className="absolute inset-0 overflow-hidden bg-black" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
+                    {/* 👇 NEW CONDITIONAL RENDERING LOGIC 👇 */}
+                    {content.hero.media?.endsWith('.mp4') || content.hero.media?.endsWith('.webm') ? (
+                        <LazyVideo
+                            src={getMediaUrl(content.hero.media)}
+                            className="absolute inset-0 w-full h-full object-cover"
+                            style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
+                        />
+                    ) : (
+                        <img
+                            src={getMediaUrl(content.hero.media || '/careers_hero.jpg')}
+                            alt="Careers Hero"
+                            className="absolute inset-0 w-full h-full object-cover"
+                            style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
+                        />
+                    )}
                     <div className="absolute inset-0"
                         style={{
                             borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px',
@@ -251,7 +261,7 @@ const Careers = () => {
                         }} />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
-                    style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
+                    style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
                 <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
                     <h1 className="text-[72px] text-white font-bold leading-tight">Careers</h1>
                 </div>
@@ -262,24 +272,24 @@ const Careers = () => {
                 <div className="w-full" style={{ paddingLeft: '200px', paddingRight: '100px' }}>
                     <h2 className="text-[72px] text-gray-900 leading-tight mb-4 font-bold">{content.intro.title}</h2>
                     <div className="w-full h-[1px] bg-gray-300 my-8"></div>
-                    <p className="text-[22px] text-sky-900 leading-relaxed">{content.intro.description}</p>
+                    <p className="text-[22px] text-[#4c6860] leading-relaxed">{content.intro.description}</p>
                 </div>
             </section>
 
             {/* Culture */}
             <section className="py-16 px-8 md:px-16 lg:px-24 bg-gray-50">
                 <div className="w-full" style={{ paddingLeft: '200px', paddingRight: '100px' }}>
-                    <h2 className="text-[42px] text-sky-500 font-bold mb-6">{content.culture.title}</h2>
+                    <h2 className="text-[42px] text-[#4c6860] font-bold mb-6">{content.culture.title}</h2>
                     <p className="text-[22px] text-gray-900 leading-relaxed mb-16">{content.culture.description}</p>
                     <div className="relative">
-                        <div className="hidden lg:block absolute top-12 left-0 right-0 h-[2px] bg-sky-300" style={{ top: '48px' }}></div>
+                        <div className="hidden lg:block absolute top-12 left-0 right-0 h-[2px] bg-[#4c6860]/40" style={{ top: '48px' }}></div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                             {content.culture.icons.map((item, idx) => {
                                 const IconComponent = iconMap[item.icon] || RocketOutlined;
                                 return (
                                     <div key={idx} className="flex flex-col items-center text-center relative z-10">
-                                        <div className="w-24 h-24 bg-sky-500 rounded-full flex items-center justify-center mb-6 relative">
-                                            <span className="absolute -top-3 -right-3 w-8 h-8 bg-sky-600 text-white rounded-full flex items-center justify-center text-lg font-bold">{idx + 1}</span>
+                                        <div className="w-24 h-24 bg-[#4c6860] rounded-full flex items-center justify-center mb-6 relative">
+                                            <span className="absolute -top-3 -right-3 w-8 h-8 bg-[#006666] text-white rounded-full flex items-center justify-center text-lg font-bold">{idx + 1}</span>
                                             <IconComponent style={{ fontSize: '40px', color: '#fff' }} />
                                         </div>
                                         <p className="text-[22px] text-gray-700 leading-relaxed">{item.text}</p>
@@ -294,7 +304,7 @@ const Careers = () => {
             {/* Responsibility Banner */}
             <section className="py-16 px-8 md:px-16 lg:px-24 bg-white">
                 <div className="w-full" style={{ paddingLeft: '200px', paddingRight: '100px' }}>
-                    <h2 className="text-[42px] text-sky-500 font-bold">{content.responsibilityBanner.title}</h2>
+                    <h2 className="text-[42px] text-[#4c6860] font-bold">{content.responsibilityBanner.title}</h2>
                 </div>
             </section>
 
@@ -308,7 +318,7 @@ const Careers = () => {
                                     <button onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
                                         className="w-full flex items-center justify-between py-6 text-left hover:bg-gray-100 transition-colors px-4 rounded-lg">
                                         <span className="text-[28px] text-gray-800 font-medium pr-8">{item.title}</span>
-                                        <span className="flex-shrink-0 text-sky-500">
+                                        <span className="flex-shrink-0 text-[#4c6860]">
                                             {openFAQ === index ? <MinusOutlined style={{ fontSize: '20px' }} /> : <PlusOutlined style={{ fontSize: '20px' }} />}
                                         </span>
                                     </button>
@@ -356,13 +366,13 @@ const Careers = () => {
                             </motion.div>
                         </div>
                         <div>
-                            <h2 className="text-[56px] text-sky-500 font-bold mb-8">{content.whyWork.title}</h2>
+                            <h2 className="text-[56px] text-[#4c6860] font-bold mb-8">{content.whyWork.title}</h2>
                             <div className="space-y-6">
                                 {content.whyWork.items.map((item, idx) => {
                                     const IconComponent = iconMap[item.icon] || TrophyOutlined;
                                     return (
                                         <div key={idx} className="flex items-start gap-4">
-                                            <IconComponent style={{ fontSize: '28px', color: '#38bdf8' }} />
+                                            <IconComponent style={{ fontSize: '28px', color: '#4c6860' }} />
                                             <p className="text-[22px] text-gray-700 leading-relaxed">{item.text}</p>
                                         </div>
                                     );

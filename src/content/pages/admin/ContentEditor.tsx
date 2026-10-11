@@ -65,7 +65,10 @@ const PAGES = [
     { id: 'ocean-freight', label: '🚢 Services (Ocean Freight)' },
     { id: 'careers', label: '💼 Careers' },
     { id: 'contact', label: '📞 Contact Us' },
+    { id: 'get-quote', label: '📝 Get a Quote' },
+    { id: 'footer', label: '🌐 Footer Settings' },
 ];
+
 
 const getSectionsForPage = (pageKey: string): string[] => {
     const map: Record<string, string[]> = {
@@ -86,6 +89,18 @@ const ContentEditor = () => {
     const [loading, setLoading] = useState(true);
     const [selectedPage, setSelectedPage] = useState('home');
     const [pageData, setPageData] = useState<PageData | null>(null);
+    
+    // 👇 MOVE YOUR FOOTER STATE HERE 👇
+    const [footerSettings, setFooterSettings] = useState<any>({
+        socialLinks: { facebook: '', youtube: '', instagram: '', linkedin: '' },
+        footerData: {
+            dhakaCompanyName: '', dhakaAddress1: '', dhakaAddress2: '', dhakaAddress3: '',
+            dhakaEmail: '', dhakaPhone: '', dhakaAin: '', dhakaJctrans: '',
+            ctgCompanyName: '', ctgAddress1: '', ctgAddress2: ''
+        }
+    });
+    // 👆 ----------------------------- 👆
+
     const [editingField, setEditingField] = useState<string | null>(null);
     const [editValue, setEditValue] = useState('');
     const [saving, setSaving] = useState(false);
@@ -116,16 +131,39 @@ const ContentEditor = () => {
         }
     };
 
+    // 3. Modify loadPage
     const loadPage = async (pageKey: string) => {
         setLoading(true);
         try {
-            const response = await contentAPI.getPage(pageKey);
-            if (response.success && response.page) {
-                setPageData(response.page);
+            if (pageKey === 'footer') {
+                const response = await contentAPI.getGlobalSettings();
+                if (response.success && response.settings) {
+                    setFooterSettings({
+                        socialLinks: response.settings.socialLinks || { facebook: '', youtube: '', instagram: '', linkedin: '' },
+                        footerData: response.settings.footerData || {
+                            dhakaCompanyName: 'Trident Global Logistics Limited',
+                            dhakaAddress1: 'Le Meridien Hotel (Commercial Space)',
+                            dhakaAddress2: 'Level-06, 79/A, Airport Road',
+                            dhakaAddress3: 'Nikunja-2, Khilkhet, Dhaka-1229, Bangladesh',
+                            dhakaEmail: 'asif.ahmed@tgllbd.com',
+                            dhakaPhone: '+8801982727100 (Wechat) & +8801755625928 & +8801713244029',
+                            dhakaAin: '301260653',
+                            dhakaJctrans: '159280',
+                            ctgCompanyName: 'Trident Global Logistics Limited',
+                            ctgAddress1: '3072 Shek Mujib Road',
+                            ctgAddress2: 'Agrabad, Chittagong'
+                        }
+                    });
+                }
+            } else {
+                const response = await contentAPI.getPage(pageKey);
+                if (response.success && response.page) {
+                    setPageData(response.page);
+                }
             }
         } catch (error) {
-            console.error('Error loading page:', error);
-            showMessage('❌ Failed to load page content');
+            console.error('Error loading content:', error);
+            showMessage('❌ Failed to load content');
         }
         setLoading(false);
     };
@@ -156,18 +194,40 @@ const ContentEditor = () => {
         });
     };
 
+    // const savePage = async () => {
+    //     if (!pageData) return;
+    //     setSaving(true);
+    //     try {
+    //         await contentAPI.updatePage(selectedPage, {
+    //             isActive: pageData.is_active,
+    //             hero: pageData.hero,
+    //             sections: pageData.sections,
+    //         });
+    //         showMessage('✅ Page saved successfully!');
+    //     } catch (error) {
+    //         showMessage('❌ Failed to save page');
+    //     }
+    //     setSaving(false);
+    // };
+
+    // 4. Modify savePage
     const savePage = async () => {
-        if (!pageData) return;
         setSaving(true);
         try {
-            await contentAPI.updatePage(selectedPage, {
-                isActive: pageData.is_active,
-                hero: pageData.hero,
-                sections: pageData.sections,
-            });
-            showMessage('✅ Page saved successfully!');
+            if (selectedPage === 'footer') {
+                await contentAPI.updateGlobalSettings(footerSettings);
+                showMessage('✅ Footer settings saved successfully!');
+            } else {
+                if (!pageData) return;
+                await contentAPI.updatePage(selectedPage, {
+                    isActive: pageData.is_active,
+                    hero: pageData.hero,
+                    sections: pageData.sections,
+                });
+                showMessage('✅ Page saved successfully!');
+            }
         } catch (error) {
-            showMessage('❌ Failed to save page');
+            showMessage('❌ Failed to save');
         }
         setSaving(false);
     };
@@ -175,6 +235,116 @@ const ContentEditor = () => {
     const handleLogout = async () => {
         await authAPI.logout();
         navigate('/admin/login');
+    };
+
+    // 5. Add render function for Footer Settings
+    const renderFooterSettings = () => {
+        const handleSocialChange = (field: string, value: string) => {
+            setFooterSettings((prev: any) => ({
+                ...prev,
+                socialLinks: { ...prev.socialLinks, [field]: value }
+            }));
+        };
+
+        const handleFooterDataChange = (field: string, value: string) => {
+            setFooterSettings((prev: any) => ({
+                ...prev,
+                footerData: { ...prev.footerData, [field]: value }
+            }));
+        };
+
+        return (
+            <div className="mb-8">
+                {/* Social Media Section */}
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Social Media Links</h3>
+                <p className="text-sm text-gray-500 mb-6">Leave blank to hide the icon from the footer.</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Facebook URL</label>
+                        <input type="text" value={footerSettings.socialLinks.facebook} 
+                            onChange={e => handleSocialChange('facebook', e.target.value)}
+                            placeholder="https://facebook.com/yourpage"
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">YouTube URL</label>
+                        <input type="text" value={footerSettings.socialLinks.youtube} 
+                            onChange={e => handleSocialChange('youtube', e.target.value)}
+                            placeholder="https://youtube.com/@yourchannel"
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
+                        <input type="text" value={footerSettings.socialLinks.instagram} 
+                            onChange={e => handleSocialChange('instagram', e.target.value)}
+                            placeholder="https://instagram.com/yourpage"
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+                        <input type="text" value={footerSettings.socialLinks.linkedin} 
+                            onChange={e => handleSocialChange('linkedin', e.target.value)}
+                            placeholder="https://linkedin.com/company/yourcompany"
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                </div>
+
+                {/* Dhaka Office Section */}
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b mt-8">Dhaka Office Details</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                        <input type="text" value={footerSettings.footerData.dhakaCompanyName} onChange={e => handleFooterDataChange('dhakaCompanyName', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Address Line 1</label>
+                        <input type="text" value={footerSettings.footerData.dhakaAddress1} onChange={e => handleFooterDataChange('dhakaAddress1', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Address Line 2</label>
+                        <input type="text" value={footerSettings.footerData.dhakaAddress2} onChange={e => handleFooterDataChange('dhakaAddress2', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Address Line 3</label>
+                        <input type="text" value={footerSettings.footerData.dhakaAddress3} onChange={e => handleFooterDataChange('dhakaAddress3', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="text" value={footerSettings.footerData.dhakaEmail} onChange={e => handleFooterDataChange('dhakaEmail', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone / Mobile</label>
+                        <input type="text" value={footerSettings.footerData.dhakaPhone} onChange={e => handleFooterDataChange('dhakaPhone', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">AIN</label>
+                        <input type="text" value={footerSettings.footerData.dhakaAin} onChange={e => handleFooterDataChange('dhakaAin', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">JCtrans Member ID</label>
+                        <input type="text" value={footerSettings.footerData.dhakaJctrans} onChange={e => handleFooterDataChange('dhakaJctrans', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                </div>
+
+                {/* Chittagong Office Section */}
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b mt-8">Chittagong Office Details</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                        <input type="text" value={footerSettings.footerData.ctgCompanyName} onChange={e => handleFooterDataChange('ctgCompanyName', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Address Line 1</label>
+                        <input type="text" value={footerSettings.footerData.ctgAddress1} onChange={e => handleFooterDataChange('ctgAddress1', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Address Line 2</label>
+                        <input type="text" value={footerSettings.footerData.ctgAddress2} onChange={e => handleFooterDataChange('ctgAddress2', e.target.value)} className="w-full p-2 border rounded-md" />
+                    </div>
+                </div>
+            </div>
+        );
     };
 
     // ============================================================
@@ -192,8 +362,9 @@ const ContentEditor = () => {
         let updated = { ...pageData };
 
         if (parts[0] === 'hero' && parts.length === 2) {
-            updated.hero = { ...updated.hero, [parts[1]]: editValue };
-        } else if (parts[0] === 'sections' && parts.length >= 3) {
+            // 👇 Add (updated.hero || {}) to prevent crashing on null
+            updated.hero = { ...(updated.hero || {}), [parts[1]]: editValue };
+        }else if (parts[0] === 'sections' && parts.length >= 3) {
             const sectionKey = parts[1];
             const sections = [...(updated.sections || [])];
             const idx = sections.findIndex(s => s.section_key === sectionKey);
@@ -282,7 +453,8 @@ const ContentEditor = () => {
             let updated = { ...pageData };
 
             if (parts[0] === 'hero' && parts.length === 2) {
-                updated.hero = { ...updated.hero, [parts[1]]: newPath };
+                // 👇 Add (updated.hero || {}) to prevent crashing on null
+                updated.hero = { ...(updated.hero || {}), [parts[1]]: newPath };
             } else if (parts[0] === 'sections' && parts.length >= 3) {
                 const sectionKey = parts[1];
                 const sections = [...(updated.sections || [])];
@@ -994,33 +1166,38 @@ const ContentEditor = () => {
                 </div>
 
                 {/* Content Editor */}
-                {pageData && (
+                {(pageData || selectedPage === 'footer') && (
                     <div className="bg-white rounded-lg shadow p-6">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-bold text-gray-800">
                                 Editing: {PAGES.find(p => p.id === selectedPage)?.label}
                             </h2>
-                            <div className="flex items-center gap-4">
-                                <span className="text-sm text-gray-500">{pageData.is_active ? '✅ Visible' : '❌ Hidden'}</span>
-                                <button onClick={togglePageActive} disabled={saving}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium ${pageData.is_active ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-green-600 hover:bg-green-700 text-white'} disabled:opacity-50`}>
-                                    {pageData.is_active ? 'Hide Page' : 'Show Page'}
-                                </button>
-                            </div>
+                            {selectedPage !== 'footer' && (
+                                <div className="flex items-center gap-4">
+                                    <span className="text-sm text-gray-500">{pageData?.is_active ? '✅ Visible' : '❌ Hidden'}</span>
+                                    <button onClick={togglePageActive} disabled={saving}
+                                        className={`px-4 py-2 rounded-md text-sm font-medium ${pageData?.is_active ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-green-600 hover:bg-green-700 text-white'} disabled:opacity-50`}>
+                                        {pageData?.is_active ? 'Hide Page' : 'Show Page'}
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
-                        {/* Section Tabs */}
-                        <div className="flex gap-2 mb-6 border-b overflow-x-auto">
-                            {sections.map(section => (
-                                <button key={section} onClick={() => setActiveSection(section)}
-                                    className={`px-4 py-2 text-sm font-medium capitalize whitespace-nowrap ${activeSection === section ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>
-                                    {section.replace(/([A-Z])/g, ' $1').trim()}
-                                </button>
-                            ))}
-                        </div>
+                        {/* Section Tabs - Only show if NOT footer */}
+                        {selectedPage !== 'footer' && (
+                            <div className="flex gap-2 mb-6 border-b overflow-x-auto">
+                                {sections.map(section => (
+                                    <button key={section} onClick={() => setActiveSection(section)}
+                                        className={`px-4 py-2 text-sm font-medium capitalize whitespace-nowrap ${activeSection === section ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                                        {section.replace(/([A-Z])/g, ' $1').trim()}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
 
                         {/* Section Content */}
                         <div className="max-h-[70vh] overflow-y-auto pr-4">
+                            {selectedPage === 'footer' && renderFooterSettings()}
                             {selectedPage === 'home' && activeSection === 'hero' && renderHeroSection()}
                             {selectedPage === 'home' && activeSection === 'beReady' && renderTextBlockSection('beReady', 'Be Ready Section')}
                             {selectedPage === 'home' && activeSection === 'logisticsServices' && renderCardsGridSection('logisticsServices', 'Logistics Services')}

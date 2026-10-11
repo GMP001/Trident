@@ -123,7 +123,7 @@ const OceanFreight = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4c6860]"></div>
             </div>
         );
     }
@@ -150,7 +150,7 @@ const OceanFreight = () => {
                     />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
-                    style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
+                    style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
                 <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
                     <h1 className="text-[72px] text-white font-bold leading-tight">Services</h1>
                 </div>
@@ -187,7 +187,7 @@ const OceanFreight = () => {
                                         </motion.h2>
                                         {segment.subtitle && (
                                             <motion.p
-                                                className="text-[28px] text-sky-500 leading-tight mb-6 font-bold"
+                                                className="text-[28px] text-[#4c6860] leading-tight mb-6 font-bold"
                                                 initial={{ opacity: 0, y: 80 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -197,7 +197,7 @@ const OceanFreight = () => {
                                             </motion.p>
                                         )}
                                         <motion.div
-                                            className="w-16 h-0.5 bg-blue-500 mb-8"
+                                            className="w-16 h-0.5 bg-[#4c6860] mb-8"
                                             initial={{ opacity: 0, y: 50 }}
                                             whileInView={{ opacity: 1, y: 0 }}
                                             viewport={{ once: true, margin: '-100px' }}
@@ -267,7 +267,7 @@ const OceanFreight = () => {
                                         </motion.h2>
                                         {segment.subtitle && (
                                             <motion.p
-                                                className="text-[28px] text-sky-500 leading-tight mb-6 font-bold"
+                                                className="text-[28px] text-[#4c6860] leading-tight mb-6 font-bold"
                                                 initial={{ opacity: 0, y: 80 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -277,7 +277,7 @@ const OceanFreight = () => {
                                             </motion.p>
                                         )}
                                         <motion.div
-                                            className="w-16 h-0.5 bg-blue-500 mb-8"
+                                            className="w-16 h-0.5 bg-[#4c6860] mb-8"
                                             initial={{ opacity: 0, y: 50 }}
                                             whileInView={{ opacity: 1, y: 0 }}
                                             viewport={{ once: true, margin: '-100px' }}

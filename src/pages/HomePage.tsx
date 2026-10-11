@@ -273,7 +273,7 @@ const HomePage = () => {
                         }} />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
-                    style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
+                    style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
                 <div className="relative z-10 text-left px-8 md:px-16 lg:px-24 max-w-6xl" style={{ marginLeft: '100px' }}>
                     <h1 className="text-[72px] text-white leading-tight mb-10 font-bold tracking-tight">{content.hero.title}</h1>
                     <div className="flex flex-col sm:flex-row gap-5">
@@ -297,7 +297,7 @@ const HomePage = () => {
                     <h2 className="text-2xl md:text-3xl lg:text-4xl text-gray-900 leading-tight mb-6 font-light">
                         {content.beReady.title}<br /><span className="font-light">{content.beReady.subtitle}</span>
                     </h2>
-                    <div className="w-20 h-0.5 bg-blue-500 mx-auto mb-8"></div>
+                    <div className="w-20 h-0.5 bg-[#4c6860] mx-auto mb-8"></div>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-12">{content.beReady.description}</p>
                     <div className="relative inline-block w-full max-w-5xl mx-auto overflow-visible">
                         <div className="relative overflow-hidden" style={{ borderRadius: '60px' }}>
@@ -307,9 +307,9 @@ const HomePage = () => {
                                 <LazyImage src={getMediaUrl(content.beReady.video)} alt="Be Ready" className="w-full h-auto object-cover" style={{ borderRadius: '60px' }} />
                             )}
                         </div>
-                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', width: '150px', background: '#38bdf8', borderBottomLeftRadius: '60px', zIndex: 15, left: '5px' }} />
-                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', width: '150px', background: '#38bdf8', borderBottomRightRadius: '60px', zIndex: 15, right: '5px' }} />
-                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', background: '#38bdf8', left: '150px', right: '150px', zIndex: 15 }} />
+                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', width: '150px', background: '#4c6860', borderBottomLeftRadius: '60px', zIndex: 15, left: '5px' }} />
+                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', width: '150px', background: '#4c6860', borderBottomRightRadius: '60px', zIndex: 15, right: '5px' }} />
+                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', background: '#4c6860', left: '150px', right: '150px', zIndex: 15 }} />
                     </div>
                 </div>
             </section>
@@ -333,8 +333,8 @@ const HomePage = () => {
                                             <LazyImage src={getMediaUrl(card.image)} alt={card.title} className="w-full h-full" style={{ objectFit: 'cover' }} />
                                         </div>
                                         <div className="p-4 h-[40%] flex flex-col justify-center">
-                                            <h3 className="text-[22px] font-semibold text-sky-500 mb-1">{card.title}</h3>
-                                            <p className="text-[22px] text-sky-500">{card.description}</p>
+                                            <h3 className="text-[22px] font-semibold text-[#4c6860] mb-1">{card.title}</h3>
+                                            <p className="text-[22px] text-[#4c6860]">{card.description}</p>
                                         </div>
                                     </a>
                                 </div>
@@ -352,12 +352,12 @@ const HomePage = () => {
                         {content.whatMakesDifferent.title}
                     </motion.h2>
                     <div className="relative">
-                        <div className="hidden lg:block absolute top-12 left-0 right-0 h-1 bg-sky-500" style={{ top: '48px' }}></div>
+                        <div className="hidden lg:block absolute top-12 left-0 right-0 h-1 bg-[#4c6860]" style={{ top: '48px' }}></div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                             {content.whatMakesDifferent.items.map((item, index) => (
                                 <div key={index} className="flex flex-col items-center text-center relative z-10">
-                                    <div className="w-24 h-24 bg-sky-500 rounded-full flex items-center justify-center mb-6 relative">
-                                        <span className="absolute -top-3 -right-3 w-8 h-8 bg-sky-500 text-white rounded-full flex items-center justify-center text-lg font-bold">{index + 1}</span>
+                                    <div className="w-24 h-24 bg-[#4c6860] rounded-full flex items-center justify-center mb-6 relative">
+                                        <span className="absolute -top-3 -right-3 w-8 h-8 bg-[#4c6860] text-white rounded-full flex items-center justify-center text-lg font-bold">{index + 1}</span>
                                         {diffIcons[index] || diffIcons[0]}
                                     </div>
                                     <p className="text-[22px] text-gray-700 leading-relaxed">{item}</p>
@@ -368,28 +368,10 @@ const HomePage = () => {
                 </div>
             </section>
 
-            {/* IATA Carousel */}
-            <section className="py-16 px-8 md:px-16 lg:px-24 bg-gray-50 overflow-hidden">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <div className="relative overflow-hidden">
-                        <div className="flex gap-16 animate-scroll" style={{ width: 'max-content' }}>
-                            {[...Array(6)].map((_, i) => (
-                                <div key={i} className="flex items-center gap-16 flex-shrink-0">
-                                    <div className="flex items-center justify-center h-32 w-48"><LazyImage src="/IATA_Logo.png" alt="IATA" className="h-full w-auto" style={{ objectFit: 'contain' }} /></div>
-                                    <div className="flex items-center justify-center h-32 w-48"><LazyImage src="/IATA_Logo-2.png" alt="IATA" className="h-full w-auto" style={{ objectFit: 'contain' }} /></div>
-                                    <div className="flex items-center justify-center h-32 w-48"><LazyImage src="/IATA_Logo_3.png" alt="IATA" className="h-full w-auto" style={{ objectFit: 'contain' }} /></div>
-                                    <div className="flex items-center justify-center h-32 w-48"><LazyImage src="/IATA_Logo_4.png" alt="IATA" className="h-full w-auto" style={{ objectFit: 'contain' }} /></div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             {/* FAQ Section */}
             <section className="py-24 px-8 md:px-16 lg:px-24 bg-white">
                 <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <h2 className="text-[72px] text-center text-gray-900 mb-12 font-bold">Frequently Asked Questions (FAQ)</h2>
+                    <h2 className="text-[52px] text-center text-gray-900 mb-12 font-bold">Frequently Asked Questions (FAQ)</h2>
                     <div className="max-w-5xl mx-auto">
                         <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
                         {content.faqs.map((faq, index) => (
@@ -397,7 +379,7 @@ const HomePage = () => {
                                 <button onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
                                     className="w-full flex items-center justify-between py-6 text-left hover:bg-gray-50 transition-colors px-4 rounded-lg">
                                     <span className="text-[22px] text-gray-800 font-medium pr-8">{faq.question}</span>
-                                    <span className="flex-shrink-0 text-sky-500">
+                                    <span className="flex-shrink-0 text-[#4c6860]">
                                         {openFAQ === index ? <MinusOutlined style={{ fontSize: '20px' }} /> : <PlusOutlined style={{ fontSize: '20px' }} />}
                                     </span>
                                 </button>
@@ -414,8 +396,8 @@ const HomePage = () => {
             <section className="py-16 px-8 md:px-16 lg:px-24 bg-white">
                 <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                     <h2 className="text-[72px] text-center text-gray-900 mb-4 font-bold">{content.connectToday.title}</h2>
-                    <p className="text-[42px] text-center text-sky-500 font-bold">{content.connectToday.subtitle}</p>
-                    <div className="w-24 h-0.5 bg-blue-500 mx-auto mt-6"></div>
+                    <p className="text-[42px] text-center text-[#4c6860] font-bold">{content.connectToday.subtitle}</p>
+                    <div className="w-24 h-0.5 bg-[#4c6860] mx-auto mt-6"></div>
                 </div>
             </section>
 

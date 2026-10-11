@@ -102,6 +102,27 @@ export interface GlobalSettings {
     contact_phone?: string;
     quote_recipients?: string[];
     contact_recipients?: string[];
+    socialLinks?: {
+        facebook?: string;
+        youtube?: string;
+        instagram?: string;
+        linkedin?: string;
+    };
+    // 👇 Add this new footerData structure
+    footerData?: {
+        dhakaCompanyName?: string;
+        dhakaAddress1?: string;
+        dhakaAddress2?: string;
+        dhakaAddress3?: string;
+        dhakaAddress4?: string;
+        dhakaEmail?: string;
+        dhakaPhone?: string;
+        dhakaAin?: string;
+        dhakaJctrans?: string;
+        ctgCompanyName?: string;
+        ctgAddress1?: string;
+        ctgAddress2?: string;
+    };
 }
 
 // ============================================================

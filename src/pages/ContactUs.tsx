@@ -29,7 +29,7 @@ interface ContactContent {
 // ============================================================
 const defaultContent: ContactContent = {
     isActive: true,
-    hero: { media: '/contact_us_2.mp4' },
+    hero: { media: '/Sales_talking_to_Customer.jpg' },
     intro: {
         title: "Let's connect. We're always ready to move.",
         description: "Whether you need to request a quote, resolve a document issue, or simply ask a question about freight, the Trident team is here to help — fast, clearly, and 24/7."
@@ -267,7 +267,7 @@ const ContactUs = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4c6860]"></div>
             </div>
         );
     }
@@ -282,11 +282,23 @@ const ContactUs = () => {
             {/* Hero */}
             <section className="relative h-[78vh] flex items-center justify-end overflow-hidden mt-[150px]">
                 <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-                    <LazyVideo
-                        src={getMediaUrl(content.hero.media || '/contact_us_2.mp4')}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
-                    />
+                    {/* 👇 NEW CONDITIONAL RENDERING LOGIC 👇 */}
+                    {content.hero.media?.endsWith('.mp4') || content.hero.media?.endsWith('.webm') ? (
+                        <LazyVideo
+                            src={getMediaUrl(content.hero.media)}
+                            className="absolute inset-0 w-full h-full object-cover"
+                            style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
+                        />
+                    ) : (
+                        <img
+                            src={getMediaUrl(content.hero.media || '/Sales_talking_to_Customer.jpg')}
+                            alt="Contact Us Hero"
+                            className="absolute inset-0 w-full h-full object-cover"
+                            style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
+                        />
+                    )}
+                    {/* 👆 END OF NEW LOGIC 👆 */}
+
                     <div className="absolute inset-0"
                         style={{
                             borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px',
@@ -294,7 +306,7 @@ const ContactUs = () => {
                         }} />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
-                    style={{ height: '45px', background: '#38bdf8', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
+                    style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
                 <div className="relative z-10 w-full text-right" style={{ paddingRight: '180px' }}>
                     <h1 className="text-[72px] text-white font-bold leading-tight">Contact Us</h1>
                 </div>
@@ -305,7 +317,7 @@ const ContactUs = () => {
                 <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                     <h1 className="text-[58px] text-gray-900 leading-tight mb-4 font-bold">{content.intro.title}</h1>
                     <div className="w-full h-[1px] bg-gray-300 my-8"></div>
-                    <p className="text-[32px] text-sky-900 leading-tight font-bold">{content.intro.description}</p>
+                    <p className="text-[32px] text-[#4c6860] leading-tight font-bold">{content.intro.description}</p>
                 </div>
             </section>
 
@@ -335,27 +347,27 @@ const ContactUs = () => {
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Name <span className="text-red-500">*</span></label>
                                             <input type="text" required value={name} onChange={e => setName(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sky-500" placeholder="Your full name" />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]" placeholder="Your full name" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Email <span className="text-red-500">*</span></label>
                                             <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sky-500" placeholder="your@email.com" />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]" placeholder="your@email.com" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Phone <span className="text-red-500">*</span></label>
                                             <input type="tel" required value={phone} onChange={e => setPhone(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sky-500" placeholder="+8801XXXXXXXXX" />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]" placeholder="+8801XXXXXXXXX" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
                                             <input type="text" value={companyName} onChange={e => setCompanyName(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sky-500" placeholder="Your company" />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]" placeholder="Your company" />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Consultation Topic</label>
                                             <select value={topic} onChange={e => setTopic(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sky-500">
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]">
                                                 <option value="">Select a topic</option>
                                                 <option value="Air Freight">Air Freight</option>
                                                 <option value="Sea Freight">Sea Freight</option>
@@ -368,7 +380,7 @@ const ContactUs = () => {
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
                                             <textarea rows={3} value={additionalNotes} onChange={e => setAdditionalNotes(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sky-500 resize-none" placeholder="Any specific requirements..." />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860] resize-none" placeholder="Any specific requirements..." />
                                         </div>
                                     </div>
                                 </div>
@@ -420,10 +432,10 @@ const ContactUs = () => {
                                             <button key={day} onClick={() => !isDisabled && handleDateClick(day)} disabled={isDisabled}
                                                 className={`aspect-square flex items-center justify-center rounded-full text-sm font-medium transition-all relative
                                                     ${isDisabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' :
-                                                        selectedDate === day ? 'bg-sky-600 text-white shadow-lg' :
+                                                        selectedDate === day ? 'bg-[#4c6860] text-white shadow-lg' :
                                                         isFullyBooked ? 'bg-orange-300 text-orange-800 cursor-not-allowed' :
                                                         isPartiallyBooked ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' :
-                                                        'hover:bg-sky-100 text-gray-700'}`}
+                                                        'hover:bg-[#4c6860]/10 text-gray-700'}`}
                                                 title={isFullyBooked ? 'Fully Booked' : isPartiallyBooked ? '1 slot booked' : 'Available'}
                                             >
                                                 {day}
@@ -450,7 +462,7 @@ const ContactUs = () => {
                                         <span>Past</span>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        <div className="w-3 h-3 rounded-full bg-sky-600"></div>
+                                        <div className="w-3 h-3 rounded-full bg-[#4c6860]"></div>
                                         <span>Selected</span>
                                     </div>
                                 </div>
@@ -488,8 +500,8 @@ const ContactUs = () => {
                                                         className={`px-3 py-2 rounded-md text-sm font-medium transition-all
                                                             ${isTimeBooked ? 'bg-orange-100 text-orange-600 border border-orange-300 cursor-not-allowed' :
                                                                 isDisabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' :
-                                                                selectedTime === time ? 'bg-sky-600 text-white border border-sky-600' : 
-                                                                'border border-gray-300 text-gray-700 hover:border-sky-500 hover:text-sky-600'}`}
+                                                                selectedTime === time ? 'bg-[#4c6860] text-white border border-[#4c6860]' : 
+                                                                'border border-gray-300 text-gray-700 hover:border-[#4c6860] hover:text-[#4c6860]'}`}
                                                         title={isTimeBooked ? 'Already booked' : isDisabled ? 'Same half already booked' : 'Available'}>
                                                         {time}
                                                         {isTimeBooked && (
@@ -509,8 +521,8 @@ const ContactUs = () => {
                                                 <span>Same half (blocked)</span>
                                             </div>
                                             <div className="flex items-center gap-1">
-                                                <div className="w-3 h-3 rounded bg-sky-600"></div>
-                                                <span>Your selection</span>
+                                            <div className="w-3 h-3 rounded bg-[#4c6860]"></div>
+                                            <span>Your selection</span>
                                             </div>
                                         </div>
                                     </div>
@@ -518,7 +530,7 @@ const ContactUs = () => {
 
                                 {selectedDate && selectedTime && (
                                     <button onClick={handleBookAppointment} disabled={isSubmitting}
-                                        className="w-full bg-sky-500 text-white py-3 rounded-md hover:bg-sky-600 transition-all text-lg font-semibold mb-4 disabled:opacity-50">
+                                        className="w-full bg-[#4c6860] text-white py-3 rounded-md hover:bg-[#006666] transition-all text-lg font-semibold mb-4 disabled:opacity-50">
                                         {isSubmitting ? 'Booking...' : 'Fix Appointment'}
                                     </button>
                                 )}
