@@ -92,7 +92,12 @@ import { getGlobalSettings } from '../services/contentService';
 const Footer = () => {
   // Default fallback data (matches your current hardcoded text)
   const [footerData, setFooterData] = useState({
-    socialLinks: { facebook: '', youtube: '', instagram: '', linkedin: '' },
+    socialLinks: { 
+      facebook: 'https://facebook.com', 
+      youtube: 'https://youtube.com', 
+      instagram: 'https://instagram.com', 
+      linkedin: 'https://linkedin.com' 
+    },
     dhakaCompanyName: 'Trident Global Logistics Limited',
     dhakaAddress1: 'Le Meridien Hotel (Commercial Space)',
     dhakaAddress2: 'Level-06, 79/A, Airport Road',
@@ -114,10 +119,10 @@ const Footer = () => {
         if (settings) {
           setFooterData(prev => ({
               socialLinks: {
-                  facebook: settings.socialLinks?.facebook || prev.socialLinks.facebook,
-                  youtube: settings.socialLinks?.youtube || prev.socialLinks.youtube,
-                  instagram: settings.socialLinks?.instagram || prev.socialLinks.instagram,
-                  linkedin: settings.socialLinks?.linkedin || prev.socialLinks.linkedin,
+                  facebook: settings.socialLinks?.facebook ?? prev.socialLinks.facebook,
+                  youtube: settings.socialLinks?.youtube ?? prev.socialLinks.youtube,
+                  instagram: settings.socialLinks?.instagram ?? prev.socialLinks.instagram,
+                  linkedin: settings.socialLinks?.linkedin ?? prev.socialLinks.linkedin,
               },
               dhakaCompanyName: settings.footerData?.dhakaCompanyName || prev.dhakaCompanyName,
               dhakaAddress1: settings.footerData?.dhakaAddress1 || prev.dhakaAddress1,
