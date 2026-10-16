@@ -1,4 +1,4 @@
-//D:/Trident Log/Trident-FE/src/pages/OceanFreight.tsx
+// D:/Trident Log/Trident-FE/src/pages/OceanFreight.tsx
 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -67,17 +67,14 @@ const OceanFreight = () => {
             if (response.success && response.page) {
                 const page = response.page;
 
-                // Extract hero
                 const hero = {
                     media: page.hero?.media || defaultContent.hero.media,
                 };
 
-                // Extract segments from sections array
                 const segmentsSection = page.sections?.find(
                     (s: any) => s.section_key === 'segments'
                 );
 
-                // Map cards to SegmentCard format
                 const segments: SegmentCard[] = (segmentsSection?.cards || []).map((card: any) => ({
                     id: card.link?.includes('#') ? card.link.split('#')[1] : undefined,
                     title: card.title || '',
@@ -90,9 +87,7 @@ const OceanFreight = () => {
                     hidden: card.hidden || false,
                 }));
 
-                // If segments section has points at section level, add them to first card or create general
                 if (segmentsSection?.points && segmentsSection.points.length > 0 && segments.length === 0) {
-                    // If no cards but section has points, create a single segment
                     segments.push({
                         title: segmentsSection.title || 'Services',
                         subtitle: segmentsSection.subtitle || '',
@@ -133,7 +128,7 @@ const OceanFreight = () => {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative h-[78vh] flex items-center justify-start overflow-hidden mt-[150px]">
+            <section className="relative h-[60vh] sm:h-[70vh] md:h-[78vh] flex items-center justify-start overflow-hidden mt-16 md:mt-[150px]">
                 <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
                     <LazyVideo
                         src={getMediaUrl(content.hero.media || '/ocean_freight.mp4')}
@@ -151,33 +146,37 @@ const OceanFreight = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
                     style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-                <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
-                    <h1 className="text-[72px] text-white font-bold leading-tight">Services</h1>
+                <div className="relative z-10 w-full px-5 sm:px-8 md:pl-[180px] md:pr-8">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[72px] text-white font-bold leading-tight">
+                        Services
+                    </h1>
                 </div>
             </section>
 
-            {/* Dynamic Segments */}
+            {/* No services fallback */}
             {content.segments.length === 0 && (
-                <section className="py-24 px-8 text-center">
-                    <p className="text-gray-500 text-lg">No services found. Please add content from the admin panel.</p>
+                <section className="py-16 md:py-24 px-5 sm:px-8 text-center">
+                    <p className="text-gray-500 text-base sm:text-lg">No services found. Please add content from the admin panel.</p>
                 </section>
             )}
 
+            {/* Dynamic Segments */}
             {content.segments.map((segment, index) => {
                 const isLeft = segment.imageLeft;
                 return (
                     <section
                         key={index}
                         id={segment.id || undefined}
-                        className={`py-24 px-8 md:px-16 lg:px-24 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
+                        className={`py-12 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
                     >
-                        <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                            <div className="grid md:grid-cols-2 gap-16 items-center">
+                        <div className="w-full">
+                            <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+
                                 {/* Text on left, Image on right */}
                                 {!isLeft && (
-                                    <div>
+                                    <div className="order-2 md:order-1">
                                         <motion.h2
-                                            className="text-[42px] text-gray-900 leading-tight mb-4 font-light"
+                                            className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] text-gray-900 leading-tight mb-3 md:mb-4 font-light"
                                             initial={{ opacity: 0, x: -300 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true, margin: '-100px' }}
@@ -187,7 +186,7 @@ const OceanFreight = () => {
                                         </motion.h2>
                                         {segment.subtitle && (
                                             <motion.p
-                                                className="text-[28px] text-[#4c6860] leading-tight mb-6 font-bold"
+                                                className="text-lg sm:text-xl md:text-2xl lg:text-[28px] text-[#4c6860] leading-tight mb-4 md:mb-6 font-bold"
                                                 initial={{ opacity: 0, y: 80 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -197,7 +196,7 @@ const OceanFreight = () => {
                                             </motion.p>
                                         )}
                                         <motion.div
-                                            className="w-16 h-0.5 bg-[#4c6860] mb-8"
+                                            className="w-16 h-0.5 bg-[#4c6860] mb-5 md:mb-8"
                                             initial={{ opacity: 0, y: 50 }}
                                             whileInView={{ opacity: 1, y: 0 }}
                                             viewport={{ once: true, margin: '-100px' }}
@@ -205,7 +204,7 @@ const OceanFreight = () => {
                                         />
                                         {segment.processLabel && (
                                             <motion.p
-                                                className="text-lg text-gray-900 font-semibold mb-4"
+                                                className="text-base sm:text-lg text-gray-900 font-semibold mb-3 md:mb-4"
                                                 initial={{ opacity: 0, y: 60 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -216,7 +215,7 @@ const OceanFreight = () => {
                                         )}
                                         {segment.process && (
                                             <motion.p
-                                                className="text-lg text-gray-600 leading-relaxed mb-4"
+                                                className="text-base sm:text-lg text-gray-600 leading-relaxed mb-3 md:mb-4"
                                                 initial={{ opacity: 0, y: 60 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -227,7 +226,7 @@ const OceanFreight = () => {
                                         )}
                                         {segment.points.length > 0 && (
                                             <motion.ol
-                                                className="space-y-4 text-lg text-gray-600 leading-relaxed list-decimal list-inside"
+                                                className="space-y-3 md:space-y-4 text-base sm:text-lg text-gray-600 leading-relaxed list-decimal list-inside"
                                                 initial={{ opacity: 0, y: 60 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -242,7 +241,7 @@ const OceanFreight = () => {
                                 )}
 
                                 {/* Image */}
-                                <div className="flex items-center justify-center">
+                                <div className={`flex items-center justify-center ${!isLeft ? 'order-1 md:order-2' : ''}`}>
                                     <div className="rounded-lg overflow-hidden shadow-xl w-full">
                                         <LazyImage
                                             src={getMediaUrl(segment.image)}
@@ -255,9 +254,9 @@ const OceanFreight = () => {
 
                                 {/* Image on left, Text on right */}
                                 {isLeft && (
-                                    <div>
+                                    <div className="order-2 md:order-2">
                                         <motion.h2
-                                            className="text-[42px] text-gray-900 leading-tight mb-4 font-light"
+                                            className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] text-gray-900 leading-tight mb-3 md:mb-4 font-light"
                                             initial={{ opacity: 0, x: 300 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true, margin: '-100px' }}
@@ -267,7 +266,7 @@ const OceanFreight = () => {
                                         </motion.h2>
                                         {segment.subtitle && (
                                             <motion.p
-                                                className="text-[28px] text-[#4c6860] leading-tight mb-6 font-bold"
+                                                className="text-lg sm:text-xl md:text-2xl lg:text-[28px] text-[#4c6860] leading-tight mb-4 md:mb-6 font-bold"
                                                 initial={{ opacity: 0, y: 80 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -277,7 +276,7 @@ const OceanFreight = () => {
                                             </motion.p>
                                         )}
                                         <motion.div
-                                            className="w-16 h-0.5 bg-[#4c6860] mb-8"
+                                            className="w-16 h-0.5 bg-[#4c6860] mb-5 md:mb-8"
                                             initial={{ opacity: 0, y: 50 }}
                                             whileInView={{ opacity: 1, y: 0 }}
                                             viewport={{ once: true, margin: '-100px' }}
@@ -285,7 +284,7 @@ const OceanFreight = () => {
                                         />
                                         {segment.processLabel && (
                                             <motion.p
-                                                className="text-lg text-gray-900 font-semibold mb-4"
+                                                className="text-base sm:text-lg text-gray-900 font-semibold mb-3 md:mb-4"
                                                 initial={{ opacity: 0, y: 60 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -296,7 +295,7 @@ const OceanFreight = () => {
                                         )}
                                         {segment.process && (
                                             <motion.p
-                                                className="text-lg text-gray-600 leading-relaxed mb-4"
+                                                className="text-base sm:text-lg text-gray-600 leading-relaxed mb-3 md:mb-4"
                                                 initial={{ opacity: 0, y: 60 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -307,7 +306,7 @@ const OceanFreight = () => {
                                         )}
                                         {segment.points.length > 0 && (
                                             <motion.ol
-                                                className="space-y-4 text-lg text-gray-600 leading-relaxed list-decimal list-inside"
+                                                className="space-y-3 md:space-y-4 text-base sm:text-lg text-gray-600 leading-relaxed list-decimal list-inside"
                                                 initial={{ opacity: 0, y: 60 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, margin: '-100px' }}
@@ -327,14 +326,14 @@ const OceanFreight = () => {
             })}
 
             <Footer />
-            
+
             {/* Horizontal Divider */}
             <div className="bg-gray-900">
               <div className="w-full h-px bg-gray-700"></div>
             </div>
 
             {/* Copyright */}
-            <div className="bg-gray-900 text-white py-6 text-center">
+            <div className="bg-gray-900 text-white py-6 text-center px-4">
               <p className="text-sm">©2026 TRIDENT GLOBAL LOGISTICS LTD. ALL RIGHTS RESERVED</p>
             </div>
 
@@ -344,7 +343,7 @@ const OceanFreight = () => {
             </div>
 
             {/* Powered By */}
-            <div className="bg-gray-900 text-gray-500 py-4 text-center">
+            <div className="bg-gray-900 text-gray-500 py-4 text-center px-4">
               <p className="text-xs">Powered by - ARK PANORAMA LAB</p>
             </div>
         </div>

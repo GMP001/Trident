@@ -254,7 +254,9 @@ const HomePage = () => {
     return (
         <>
             {/* Hero Section */}
-            <section className="relative h-[95vh] flex items-center justify-start overflow-hidden">
+            <section
+                className="relative h-screen md:h-[95vh] flex items-center justify-start overflow-hidden pb-16 md:pb-0"
+            >
                 <Navbar />
                 <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
                     {isVideo(content.hero.image) ? (
@@ -269,21 +271,26 @@ const HomePage = () => {
                     <div className="absolute inset-0"
                         style={{
                             borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px',
-                            background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
+                            background: 'linear-gradient(to right, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.4) 75%, rgba(0, 0, 0, 0) 100%)',
                         }} />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
                     style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-                <div className="relative z-10 text-left px-8 md:px-16 lg:px-24 max-w-6xl" style={{ marginLeft: '100px' }}>
-                    <h1 className="text-[72px] text-white leading-tight mb-10 font-bold tracking-tight">{content.hero.title}</h1>
-                    <div className="flex flex-col sm:flex-row gap-5">
-                        <Link to="/ocean-freight">
-                            <Button type="primary" size="large" className="h-14 px-10 text-lg font-semibold shadow-lg bg-white text-black hover:bg-gray-100">
+
+                <div className="relative z-10 text-left w-full px-5 sm:px-8 md:pl-[100px] md:pr-8 lg:pr-24 max-w-6xl">
+                    <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-[72px] text-white leading-snug md:leading-tight mb-5 md:mb-10 font-bold tracking-tight">
+                        {content.hero.title}
+                    </h1>
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-5">
+                        <Link to="/ocean-freight" className="w-full sm:w-auto">
+                            <Button type="primary" size="large"
+                                className="h-11 md:h-14 px-6 md:px-10 text-sm sm:text-base md:text-lg font-semibold shadow-lg bg-white text-black hover:bg-gray-100 w-full">
                                 {content.hero.button1Text}
                             </Button>
                         </Link>
-                        <Link to="/contact">
-                            <Button size="large" className="h-14 px-10 text-lg font-semibold border-2 border-white text-white bg-transparent hover:bg-white/20 transition-all">
+                        <Link to="/contact" className="w-full sm:w-auto">
+                            <Button size="large"
+                                className="h-11 md:h-14 px-6 md:px-10 text-sm sm:text-base md:text-lg font-semibold border-2 border-white text-white bg-transparent hover:bg-white/20 transition-all w-full">
                                 {content.hero.button2Text}
                             </Button>
                         </Link>
@@ -292,13 +299,15 @@ const HomePage = () => {
             </section>
 
             {/* Be Ready Section */}
-            <section className="relative py-10 px-8 md:px-16 lg:px-24 bg-white overflow-visible">
+            <section className="relative py-10 px-5 sm:px-8 md:px-16 lg:px-24 bg-white overflow-visible">
                 <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl text-gray-900 leading-tight mb-6 font-light">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-900 leading-tight mb-6 font-light">
                         {content.beReady.title}<br /><span className="font-light">{content.beReady.subtitle}</span>
                     </h2>
                     <div className="w-20 h-0.5 bg-[#4c6860] mx-auto mb-8"></div>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-12">{content.beReady.description}</p>
+                    <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-12">
+                        {content.beReady.description}
+                    </p>
                     <div className="relative inline-block w-full max-w-5xl mx-auto overflow-visible">
                         <div className="relative overflow-hidden" style={{ borderRadius: '60px' }}>
                             {isVideo(content.beReady.video) ? (
@@ -307,34 +316,35 @@ const HomePage = () => {
                                 <LazyImage src={getMediaUrl(content.beReady.video)} alt="Be Ready" className="w-full h-auto object-cover" style={{ borderRadius: '60px' }} />
                             )}
                         </div>
-                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', width: '150px', background: '#4c6860', borderBottomLeftRadius: '60px', zIndex: 15, left: '5px' }} />
-                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', width: '150px', background: '#4c6860', borderBottomRightRadius: '60px', zIndex: 15, right: '5px' }} />
-                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', background: '#4c6860', left: '150px', right: '150px', zIndex: 15 }} />
+                        {/* Green decorative corners — scaled down so they fit mobile */}
+                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', width: '80px', background: '#4c6860', borderBottomLeftRadius: '60px', zIndex: 15, left: '5px' }} />
+                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', width: '80px', background: '#4c6860', borderBottomRightRadius: '60px', zIndex: 15, right: '5px' }} />
+                        <div className="absolute bottom-0 pointer-events-none" style={{ height: '35px', background: '#4c6860', left: '80px', right: '80px', zIndex: 15 }} />
                     </div>
                 </div>
             </section>
 
             {/* Logistics Services */}
-            <section className="py-16 bg-gray-50">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <h2 className="text-center text-6xl font-normal mb-4 text-gray-900" style={{ fontFamily: 'Verdana, sans-serif' }}>
+            <section className="py-12 md:py-16 bg-gray-50">
+                <div className="w-full px-5 sm:px-8 md:px-12 lg:px-24">
+                    <h2 className="text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal mb-4 text-gray-900" style={{ fontFamily: 'Verdana, sans-serif' }}>
                         {content.logisticsServices.title}
                     </h2>
-                    <p className="text-center text-base text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
+                    <p className="text-center text-sm sm:text-base text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
                         {content.logisticsServices.description}
                     </p>
-                    <div className="flex flex-wrap justify-center gap-8">
+                    <div className="flex flex-wrap justify-center gap-6 md:gap-8">
                         {content.logisticsServices.cards
                             .filter((card) => !card.hidden)
                             .map((card, index) => (
-                                <div key={index} className="w-[350px] h-[350px]">
+                                <div key={index} className="w-full max-w-[350px] sm:w-[300px] md:w-[350px] h-auto sm:h-[350px]">
                                     <a href={card.link} className="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 h-full">
-                                        <div className="w-full h-[60%] bg-gray-100 flex items-center justify-center overflow-hidden">
+                                        <div className="w-full h-48 sm:h-[60%] bg-gray-100 flex items-center justify-center overflow-hidden">
                                             <LazyImage src={getMediaUrl(card.image)} alt={card.title} className="w-full h-full" style={{ objectFit: 'cover' }} />
                                         </div>
-                                        <div className="p-4 h-[40%] flex flex-col justify-center">
-                                            <h3 className="text-[22px] font-semibold text-[#4c6860] mb-1">{card.title}</h3>
-                                            <p className="text-[22px] text-[#4c6860]">{card.description}</p>
+                                        <div className="p-4 sm:h-[40%] flex flex-col justify-center">
+                                            <h3 className="text-base sm:text-lg md:text-xl lg:text-[22px] font-semibold text-[#4c6860] mb-1">{card.title}</h3>
+                                            <p className="text-base sm:text-lg md:text-xl lg:text-[22px] text-[#4c6860]">{card.description}</p>
                                         </div>
                                     </a>
                                 </div>
@@ -344,11 +354,15 @@ const HomePage = () => {
             </section>
 
             {/* What Makes Trident Different */}
-            <section className="py-24 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <motion.h2 className="text-[72px] text-center text-gray-900 mb-20 font-bold"
-                        initial={{ opacity: 0, y: -50 }} whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: '-100px' }} transition={{ duration: 0.8, ease: 'easeOut' }}>
+            <section className="py-16 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <motion.h2
+                        className="text-3xl sm:text-4xl md:text-5xl lg:text-[72px] text-center text-gray-900 mb-12 md:mb-20 font-bold"
+                        initial={{ opacity: 0, y: -50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: '-100px' }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                    >
                         {content.whatMakesDifferent.title}
                     </motion.h2>
                     <div className="relative">
@@ -356,11 +370,11 @@ const HomePage = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                             {content.whatMakesDifferent.items.map((item, index) => (
                                 <div key={index} className="flex flex-col items-center text-center relative z-10">
-                                    <div className="w-24 h-24 bg-[#4c6860] rounded-full flex items-center justify-center mb-6 relative">
+                                    <div className="w-20 h-20 md:w-24 md:h-24 bg-[#4c6860] rounded-full flex items-center justify-center mb-6 relative">
                                         <span className="absolute -top-3 -right-3 w-8 h-8 bg-[#4c6860] text-white rounded-full flex items-center justify-center text-lg font-bold">{index + 1}</span>
                                         {diffIcons[index] || diffIcons[0]}
                                     </div>
-                                    <p className="text-[22px] text-gray-700 leading-relaxed">{item}</p>
+                                    <p className="text-base sm:text-lg md:text-xl lg:text-[22px] text-gray-700 leading-relaxed">{item}</p>
                                 </div>
                             ))}
                         </div>
@@ -369,22 +383,26 @@ const HomePage = () => {
             </section>
 
             {/* FAQ Section */}
-            <section className="py-24 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <h2 className="text-[52px] text-center text-gray-900 mb-12 font-bold">Frequently Asked Questions (FAQ)</h2>
+            <section className="py-16 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl text-center text-gray-900 mb-10 md:mb-12 font-bold">
+                        Frequently Asked Questions (FAQ)
+                    </h2>
                     <div className="max-w-5xl mx-auto">
                         <div className="w-full h-0.5 bg-gray-300 mb-8"></div>
                         {content.faqs.map((faq, index) => (
                             <div key={index} className="border-b border-gray-200">
                                 <button onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                                    className="w-full flex items-center justify-between py-6 text-left hover:bg-gray-50 transition-colors px-4 rounded-lg">
-                                    <span className="text-[22px] text-gray-800 font-medium pr-8">{faq.question}</span>
+                                    className="w-full flex items-center justify-between py-5 md:py-6 text-left hover:bg-gray-50 transition-colors px-3 md:px-4 rounded-lg">
+                                    <span className="text-base sm:text-lg md:text-xl lg:text-[22px] text-gray-800 font-medium pr-4 md:pr-8">{faq.question}</span>
                                     <span className="flex-shrink-0 text-[#4c6860]">
                                         {openFAQ === index ? <MinusOutlined style={{ fontSize: '20px' }} /> : <PlusOutlined style={{ fontSize: '20px' }} />}
                                     </span>
                                 </button>
                                 {openFAQ === index && (
-                                    <div className="pb-6 px-4"><p className="text-[22px] text-gray-600 leading-relaxed">{faq.answer}</p></div>
+                                    <div className="pb-6 px-3 md:px-4">
+                                        <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">{faq.answer}</p>
+                                    </div>
                                 )}
                             </div>
                         ))}
@@ -393,22 +411,30 @@ const HomePage = () => {
             </section>
 
             {/* Connect Today */}
-            <section className="py-16 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <h2 className="text-[72px] text-center text-gray-900 mb-4 font-bold">{content.connectToday.title}</h2>
-                    <p className="text-[42px] text-center text-[#4c6860] font-bold">{content.connectToday.subtitle}</p>
+            <section className="py-12 md:py-16 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[72px] text-center text-gray-900 mb-4 font-bold">
+                        {content.connectToday.title}
+                    </h2>
+                    <p className="text-xl sm:text-2xl md:text-3xl lg:text-[42px] text-center text-[#4c6860] font-bold">
+                        {content.connectToday.subtitle}
+                    </p>
                     <div className="w-24 h-0.5 bg-[#4c6860] mx-auto mt-6"></div>
                 </div>
             </section>
 
-            {/* Parallax CTA */}
-            <div className="relative h-screen flex items-center justify-center"
-                style={{ backgroundImage: `url(${getMediaUrl(content.connectToday.backgroundImage)})`, backgroundAttachment: 'fixed', backgroundPosition: 'center', backgroundSize: 'cover' }}>
+            {/* Parallax CTA — bg-fixed only on md+ to avoid iOS mobile bug */}
+            <div
+                className="relative h-[60vh] md:h-screen flex items-center justify-center bg-scroll md:bg-fixed bg-center bg-cover"
+                style={{ backgroundImage: `url(${getMediaUrl(content.connectToday.backgroundImage)})` }}
+            >
                 <div className="absolute inset-0 bg-black/60"></div>
-                <div className="relative z-10 text-center px-8">
-                    <h2 className="text-[44px] text-white font-bold mb-4">{content.connectToday.ctaText}</h2>
+                <div className="relative z-10 text-center px-5 sm:px-8">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[44px] text-white font-bold mb-4">
+                        {content.connectToday.ctaText}
+                    </h2>
                     <Link to="/contact">
-                        <button className="bg-transparent border-2 border-white text-white px-10 py-4 rounded-md hover:bg-white hover:text-gray-900 transition-all text-xl font-semibold">
+                        <button className="bg-transparent border-2 border-white text-white px-6 md:px-10 py-3 md:py-4 rounded-md hover:bg-white hover:text-gray-900 transition-all text-base md:text-xl font-semibold">
                             {content.connectToday.ctaText}
                         </button>
                     </Link>
@@ -416,14 +442,14 @@ const HomePage = () => {
             </div>
 
             <Footer />
-            
+
             {/* Horizontal Divider */}
             <div className="bg-gray-900">
               <div className="w-full h-px bg-gray-700"></div>
             </div>
 
             {/* Copyright */}
-            <div className="bg-gray-900 text-white py-6 text-center">
+            <div className="bg-gray-900 text-white py-6 text-center px-4">
               <p className="text-sm">©2026 TRIDENT GLOBAL LOGISTICS LTD. ALL RIGHTS RESERVED</p>
             </div>
 
@@ -433,7 +459,7 @@ const HomePage = () => {
             </div>
 
             {/* Powered By */}
-            <div className="bg-gray-900 text-gray-500 py-4 text-center">
+            <div className="bg-gray-900 text-gray-500 py-4 text-center px-4">
               <p className="text-xs">Powered by - ARK PANORAMA LAB</p>
             </div>
         </>

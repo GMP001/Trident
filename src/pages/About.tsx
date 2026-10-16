@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../../src/pages/Footer';
 import { contentAPI } from '../services/api';
-import { 
-  SmileOutlined, 
-  TeamOutlined, 
-  HeartOutlined, 
-  UserOutlined, 
-  EyeOutlined 
+import {
+  SmileOutlined,
+  TeamOutlined,
+  HeartOutlined,
+  UserOutlined,
+  EyeOutlined
 } from '@ant-design/icons';
 import LazyVideo from '../pages/LazyVideo';
 import LazyImage from '../pages/LazyImage';
@@ -53,7 +53,7 @@ interface AboutContent {
 }
 
 // ============================================================
-// Default content (fallback)
+// Default content (fallback) — unchanged
 // ============================================================
 const defaultContent: AboutContent = {
     isActive: true,
@@ -103,7 +103,7 @@ const defaultContent: AboutContent = {
 };
 
 // ============================================================
-// Helper: Find section by key
+// Helper
 // ============================================================
 const findSection = (sections: any[], key: string) => {
     return sections?.find((s: any) => s.section_key === key) || null;
@@ -131,7 +131,6 @@ const About = () => {
                 const page = response.page;
                 const sections = page.sections || [];
 
-                // Purpose section
                 const purposeSection = findSection(sections, 'purpose');
                 const purpose = {
                     heading: purposeSection?.heading || defaultContent.purpose.heading,
@@ -140,7 +139,6 @@ const About = () => {
                     image: purposeSection?.image || defaultContent.purpose.image,
                 };
 
-                // Vision section
                 const visionSection = findSection(sections, 'vision');
                 const vision = {
                     title: visionSection?.title || defaultContent.vision.title,
@@ -149,17 +147,15 @@ const About = () => {
                     missionStatement: visionSection?.mission_statement || defaultContent.vision.missionStatement,
                 };
 
-                // Values section (cards + shared image)
                 const valuesSection = findSection(sections, 'values');
                 const valuesImage = valuesSection?.image || '/core_values.jpg';
                 const values: Value[] = (valuesSection?.cards || []).map((card: any) => ({
                     title: card.title || '',
                     description: card.description || '',
-                    image: valuesImage, // Use shared section image
+                    image: valuesImage,
                 }));
                 if (values.length === 0) values.push(...defaultContent.values);
 
-                // Leadership section (leaders)
                 const leadershipSection = findSection(sections, 'leadership');
                 const leaders: Leader[] = (leadershipSection?.leaders || []).map((l: any) => ({
                     name: l.name || '',
@@ -177,7 +173,6 @@ const About = () => {
                     leaders,
                 };
 
-                // Sustainability section
                 const sustainabilitySection = findSection(sections, 'sustainability');
                 const sustainability = {
                     title: sustainabilitySection?.title || defaultContent.sustainability.title,
@@ -185,7 +180,6 @@ const About = () => {
                     image: sustainabilitySection?.image || defaultContent.sustainability.image,
                 };
 
-                // Offices section
                 const officesSection = findSection(sections, 'offices');
                 const offices = {
                     title: officesSection?.title || defaultContent.offices.title,
@@ -217,7 +211,7 @@ const About = () => {
     };
 
     // ============================================================
-    // Render
+    // Loading
     // ============================================================
     if (loading) {
         return (
@@ -245,7 +239,7 @@ const About = () => {
             )}
 
             {/* Hero */}
-            <section className="relative h-[78vh] flex items-center justify-start overflow-hidden mt-[150px]">
+            <section className="relative h-[60vh] sm:h-[70vh] md:h-[78vh] flex items-center justify-start overflow-hidden mt-16 md:mt-[150px]">
                 <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
                     <LazyVideo
                         src={getMediaUrl(content.hero.media || '/About_US_Latest.mp4')}
@@ -263,19 +257,25 @@ const About = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
                     style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-                <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
-                    <h1 className="text-[72px] text-white font-bold leading-tight">About Us</h1>
+                <div className="relative z-10 w-full px-5 sm:px-8 md:pl-[180px] md:pr-8">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[72px] text-white font-bold leading-tight">
+                        About Us
+                    </h1>
                 </div>
             </section>
 
             {/* Who We Are */}
-            <section className="py-24 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <div className="grid md:grid-cols-2 gap-12 mb-8">
+            <section className="py-12 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-8">
                         <div>
-                            <h2 className="text-[100px] text-gray-900 leading-tight mb-2 font-light">{content.purpose.heading}</h2>
-                            <p className="text-[42px] text-[#4c6860] leading-tight mb-4 font-light">{content.purpose.subtitle}</p>
-                            <div className="w-36 h-0.5 bg-[#4c6860]"></div>
+                            <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-[100px] text-gray-900 leading-tight mb-2 font-light">
+                                {content.purpose.heading}
+                            </h2>
+                            <p className="text-xl sm:text-2xl md:text-3xl lg:text-[42px] text-[#4c6860] leading-tight mb-4 font-light">
+                                {content.purpose.subtitle}
+                            </p>
+                            <div className="w-24 md:w-36 h-0.5 bg-[#4c6860]"></div>
                         </div>
                         <div className="flex items-stretch">
                             <div className="rounded-lg overflow-hidden shadow-lg w-full">
@@ -289,7 +289,7 @@ const About = () => {
                         </div>
                     </div>
                     <div>
-                        <p className="text-xl text-gray-600 leading-relaxed"
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed"
                             dangerouslySetInnerHTML={{ __html: content.purpose.text.replace(/\n\n/g, '<br /><br />') }}>
                         </p>
                     </div>
@@ -297,51 +297,71 @@ const About = () => {
             </section>
 
             {/* Vision & Mission */}
-            <section className="relative py-24 px-8 md:px-16 lg:px-24 bg-gray-50">
+            <section className="relative py-12 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-gray-50">
                 <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
                     style={{ backgroundImage: `url(${getMediaUrl('/About Us-2.jpg')})` }}></div>
-                <div className="relative z-10 w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <div className="mb-12">
-                        <h2 className="text-3xl md:text-4xl text-gray-900 leading-tight mb-6 font-light">{content.vision.title}</h2>
-                        <p className="text-xl text-gray-600 leading-relaxed mb-8">{content.vision.description}</p>
+                <div className="relative z-10 w-full">
+                    <div className="mb-10 md:mb-12">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl text-gray-900 leading-tight mb-4 md:mb-6 font-light">
+                            {content.vision.title}
+                        </h2>
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-8">
+                            {content.vision.description}
+                        </p>
                     </div>
-                    <div className="mb-12">
-                        <h3 className="text-[36px] text-[#4c6860] leading-tight mb-4 font-bold">Our Vision</h3>
-                        <p className="text-xl text-gray-600 leading-relaxed">{content.vision.visionStatement}</p>
+                    <div className="mb-10 md:mb-12">
+                        <h3 className="text-2xl sm:text-3xl md:text-[36px] text-[#4c6860] leading-tight mb-3 md:mb-4 font-bold">
+                            Our Vision
+                        </h3>
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                            {content.vision.visionStatement}
+                        </p>
                     </div>
-                    <div className="mb-12">
-                        <h3 className="text-[36px] text-[#4c6860] leading-tight mb-4 font-bold">Our Mission</h3>
-                        <p className="text-xl text-gray-600 leading-relaxed">{content.vision.missionStatement}</p>
+                    <div className="mb-10 md:mb-12">
+                        <h3 className="text-2xl sm:text-3xl md:text-[36px] text-[#4c6860] leading-tight mb-3 md:mb-4 font-bold">
+                            Our Mission
+                        </h3>
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                            {content.vision.missionStatement}
+                        </p>
                     </div>
                 </div>
             </section>
 
             {/* Core Values */}
-            <section className="relative py-24 px-8 md:px-16 lg:px-24 bg-white">
+            <section className="relative py-12 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
                 <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
                     style={{ backgroundImage: `url(${getMediaUrl('/core_values.jpg')})` }}></div>
-                <div className="relative z-10 w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl text-[#4c6860] mb-4 font-light">Our values connect us and guide us</h2>
+                <div className="relative z-10 w-full">
+                    <div className="text-center mb-12 md:mb-16">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#4c6860] mb-4 font-light">
+                            Our values connect us and guide us
+                        </h2>
                         <div className="w-20 h-0.5 bg-[#4c6860] mx-auto"></div>
-                        <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">Our values inspire us to do better in a constantly changing world, guiding our work every day.</p>
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
+                            Our values inspire us to do better in a constantly changing world, guiding our work every day.
+                        </p>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-16 items-stretch">
+                    <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-stretch">
                         <div className="space-y-8 flex flex-col justify-center">
                             {content.values.map((value, index) => (
-                                <div key={index} className="flex items-start gap-6 group">
-                                <div className="flex-shrink-0 w-16 h-16 bg-[#4c6860] rounded-full flex items-center justify-center group-hover:bg-[#006666] transition-colors">
+                                <div key={index} className="flex items-start gap-4 md:gap-6 group">
+                                    <div className="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 bg-[#4c6860] rounded-full flex items-center justify-center group-hover:bg-[#006666] transition-colors">
                                         {valueIcons[index] || valueIcons[0]}
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="text-2xl font-semibold text-gray-900 mb-3">{value.title}</h3>
-                                        <p className="text-lg text-gray-600 leading-relaxed">{value.description}</p>
+                                        <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2 md:mb-3">
+                                            {value.title}
+                                        </h3>
+                                        <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                                            {value.description}
+                                        </p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <div className="flex items-stretch">
-                            <div className="rounded-lg overflow-hidden shadow-xl w-full">
+                            <div className="rounded-lg overflow-hidden shadow-xl w-full h-64 sm:h-80 md:h-auto">
                                 <LazyImage
                                     src={getMediaUrl(content.values[0]?.image || '/core_values.jpg')}
                                     alt="Our Values"
@@ -355,20 +375,23 @@ const About = () => {
             </section>
 
             {/* Leadership */}
-            <section className="relative py-24 px-8 md:px-16 lg:px-24 bg-gray-50">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <div className="text-center mb-16">
-                        <h1 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">{content.leadership.title}</h1>
-                        <div className="w-20 h-0.5 bg-[#4c6860] mx-auto mb-8"></div>
-                        <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">{content.leadership.description}</p>
+            <section className="relative py-12 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-gray-50">
+                <div className="w-full">
+                    <div className="text-center mb-12 md:mb-16">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4 md:mb-6 text-gray-900">
+                            {content.leadership.title}
+                        </h1>
+                        <div className="w-20 h-0.5 bg-[#4c6860] mx-auto mb-6 md:mb-8"></div>
+                        <p className="text-base sm:text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                            {content.leadership.description}
+                        </p>
                     </div>
-                    <div className="space-y-12">
+                    <div className="space-y-8 md:space-y-12">
                         {content.leadership.leaders.map((leader, i) => (
                             <div key={i} className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-[#4c6860]/30">
                                 <div className="grid md:grid-cols-2 gap-0">
-                                    <div className={`h-80 md:h-96 bg-gradient-to-br ${leader.gradient} flex items-center justify-center p-8 ${leader.reverse ? 'order-1 md:order-2' : ''}`}>
-                                        {/* Added border-4 and border-[#4c6860] here */}
-                                        <div className="w-64 h-64 bg-white shadow-xl rounded-full flex items-center justify-center overflow-hidden border-2 border-[#4c6860]">
+                                    <div className={`h-72 sm:h-80 md:h-96 bg-gradient-to-br ${leader.gradient} flex items-center justify-center p-6 md:p-8 ${leader.reverse ? 'order-1 md:order-2' : ''}`}>
+                                        <div className="w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 bg-white shadow-xl rounded-full flex items-center justify-center overflow-hidden border-2 border-[#4c6860]">
                                             <LazyImage
                                                 src={getMediaUrl(leader.image)}
                                                 alt={leader.name}
@@ -377,11 +400,17 @@ const About = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className={`p-10 flex flex-col justify-center ${leader.reverse ? 'order-2 md:order-1' : ''}`}>
-                                        <h3 className="text-3xl font-semibold text-gray-900 mb-2">{leader.name}</h3>
-                                        <p className="text-[#4c6860] font-medium text-lg mb-4">{leader.title}</p>
-                                        <div className="w-16 h-0.5 bg-[#4c6860] mb-6"></div>
-                                        <p className="text-gray-600 text-lg leading-relaxed">{leader.description}</p>
+                                    <div className={`p-6 sm:p-8 md:p-10 flex flex-col justify-center ${leader.reverse ? 'order-2 md:order-1' : ''}`}>
+                                        <h3 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">
+                                            {leader.name}
+                                        </h3>
+                                        <p className="text-[#4c6860] font-medium text-base sm:text-lg mb-4">
+                                            {leader.title}
+                                        </p>
+                                        <div className="w-16 h-0.5 bg-[#4c6860] mb-4 md:mb-6"></div>
+                                        <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+                                            {leader.description}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -391,10 +420,10 @@ const About = () => {
             </section>
 
             {/* Sustainability */}
-            <section className="py-24 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <div className="grid md:grid-cols-2 gap-16 items-start">
-                        <div className="relative h-96 rounded-lg overflow-hidden shadow-xl order-2 md:order-1">
+            <section className="py-12 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
+                        <div className="relative h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden shadow-xl order-2 md:order-1">
                             <LazyImage
                                 src={getMediaUrl(content.sustainability.image)}
                                 alt="Sustainability"
@@ -403,60 +432,77 @@ const About = () => {
                             />
                         </div>
                         <div className="order-1 md:order-2">
-                            <h2 className="text-3xl md:text-4xl text-gray-900 mb-6 font-light">{content.sustainability.title}</h2>
-                            <p className="text-xl text-gray-600 leading-relaxed mb-6">{content.sustainability.description}</p>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl text-gray-900 mb-4 md:mb-6 font-light">
+                                {content.sustainability.title}
+                            </h2>
+                            <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed mb-6">
+                                {content.sustainability.description}
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Our Offices */}
-            <section className="py-24 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">{content.offices.title}</h2>
-                        <div className="w-20 h-0.5 bg-[#4c6860] mx-auto mb-8"></div>
-                        <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">{content.offices.description}</p>
+            <section className="py-12 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <div className="text-center mb-12 md:mb-16">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 md:mb-6 text-gray-900">
+                            {content.offices.title}
+                        </h2>
+                        <div className="w-20 h-0.5 bg-[#4c6860] mx-auto mb-6 md:mb-8"></div>
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                            {content.offices.description}
+                        </p>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-16 items-start">
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
                         <div>
-                            <h3 className="text-2xl font-semibold text-gray-900 mb-6">{content.offices.companyName}</h3>
-                            <div className="space-y-4 text-lg text-gray-600 leading-relaxed">
+                            <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
+                                {content.offices.companyName}
+                            </h3>
+                            <div className="space-y-2 md:space-y-4 text-base sm:text-lg text-gray-600 leading-relaxed">
                                 {content.offices.address.map((line, i) => <p key={i}>{line}</p>)}
                             </div>
-                            <div className="mt-8 space-y-3">
-                                <div className="flex items-center gap-3 text-gray-600">
-                                    <svg className="w-5 h-5 text-[#4c6860]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="mt-6 md:mt-8 space-y-3">
+                                <div className="flex items-center gap-3 text-gray-600 text-base sm:text-lg">
+                                    <svg className="w-5 h-5 text-[#4c6860] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                     </svg>
                                     <span>{content.offices.phone}</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-gray-600">
-                                    <svg className="w-5 h-5 text-[#4c6860]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-center gap-3 text-gray-600 text-base sm:text-lg">
+                                    <svg className="w-5 h-5 text-[#4c6860] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
-                                    <span>{content.offices.email}</span>
+                                    <span className="break-all">{content.offices.email}</span>
                                 </div>
                             </div>
                         </div>
-                        <div className="rounded-lg overflow-hidden shadow-xl h-96">
-                            <iframe src={content.offices.mapUrl} width="100%" height="100%" style={{ border: 0 }}
-                                allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                                title="Trident Global Logistics Office Location"></iframe>
+                        <div className="rounded-lg overflow-hidden shadow-xl h-64 sm:h-80 md:h-96">
+                            <iframe
+                                src={content.offices.mapUrl}
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                title="Trident Global Logistics Office Location"
+                            ></iframe>
                         </div>
                     </div>
                 </div>
             </section>
 
             <Footer />
-            
+
             {/* Horizontal Divider */}
             <div className="bg-gray-900">
               <div className="w-full h-px bg-gray-700"></div>
             </div>
 
             {/* Copyright */}
-            <div className="bg-gray-900 text-white py-6 text-center">
+            <div className="bg-gray-900 text-white py-6 text-center px-4">
               <p className="text-sm">©2026 TRIDENT GLOBAL LOGISTICS LTD. ALL RIGHTS RESERVED</p>
             </div>
 
@@ -466,7 +512,7 @@ const About = () => {
             </div>
 
             {/* Powered By */}
-            <div className="bg-gray-900 text-gray-500 py-4 text-center">
+            <div className="bg-gray-900 text-gray-500 py-4 text-center px-4">
               <p className="text-xs">Powered by - ARK PANORAMA LAB</p>
             </div>
         </div>

@@ -25,7 +25,7 @@ interface ContactContent {
 }
 
 // ============================================================
-// Default Content (Fallback)
+// Default Content (Fallback) — unchanged
 // ============================================================
 const defaultContent: ContactContent = {
     isActive: true,
@@ -51,7 +51,7 @@ const defaultContent: ContactContent = {
 };
 
 // ============================================================
-// Helper: Find section by key
+// Helper
 // ============================================================
 const findSection = (sections: any[], key: string) => {
     return sections?.find((s: any) => s.section_key === key) || null;
@@ -60,8 +60,6 @@ const findSection = (sections: any[], key: string) => {
 // ============================================================
 // Constants
 // ============================================================
-
-
 const timeSlots = [
     '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
     '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM',
@@ -80,7 +78,7 @@ const getDaysInMonth = (year: number, month: number): number => {
 };
 
 const getStartDayOfMonth = (year: number, month: number): number => {
-    return new Date(year, month, 1).getDay(); // 0=Sun, 1=Mon, ...
+    return new Date(year, month, 1).getDay();
 };
 
 // ============================================================
@@ -95,7 +93,6 @@ const ContactUs = () => {
     const [bookedSlots, setBookedSlots] = useState<{ date: string; time: string }[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Form fields
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -124,14 +121,12 @@ const ContactUs = () => {
                 const page = response.page;
                 const sections = page.sections || [];
 
-                // Intro
                 const introSection = findSection(sections, 'intro');
                 const intro = {
                     title: introSection?.title || defaultContent.intro.title,
                     description: introSection?.description || defaultContent.intro.description,
                 };
 
-                // Consultation
                 const consultationSection = findSection(sections, 'consultation');
                 const consultation = {
                     title: consultationSection?.title || defaultContent.consultation.title,
@@ -172,14 +167,13 @@ const ContactUs = () => {
         const monthName = getMonthName(currentMonth);
         const dateStr = `${monthName} ${day}, ${currentYear}`;
         const bookingsForDate = bookedSlots.filter(slot => slot.date === dateStr);
-        return bookingsForDate.length >= 2; // Max 2 bookings per day
+        return bookingsForDate.length >= 2;
     };
 
     const getBookedCount = (day: number): number => {
         const monthName = getMonthName(currentMonth);
         const dateStr = `${monthName} ${day}, ${currentYear}`;
-        const bookingsForDate = bookedSlots.filter(slot => slot.date === dateStr);
-        return bookingsForDate.length;
+        return bookedSlots.filter(slot => slot.date === dateStr).length;
     };
 
     const getBookedTimesForDate = (day: number): string[] => {
@@ -250,7 +244,6 @@ const ContactUs = () => {
             loadBookedSlots();
             setTimeout(() => setBooked(false), 5000);
 
-            // Reset form
             setName(''); setEmail(''); setPhone(''); setCompanyName('');
             setTopic(''); setAdditionalNotes('');
             setSelectedDate(null); setSelectedTime(null);
@@ -280,9 +273,8 @@ const ContactUs = () => {
             <Navbar />
 
             {/* Hero */}
-            <section className="relative h-[78vh] flex items-center justify-end overflow-hidden mt-[150px]">
+            <section className="relative h-[60vh] sm:h-[70vh] md:h-[78vh] flex items-center justify-end overflow-hidden mt-16 md:mt-[150px]">
                 <div className="absolute inset-0 overflow-hidden" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-                    {/* 👇 NEW CONDITIONAL RENDERING LOGIC 👇 */}
                     {content.hero.media?.endsWith('.mp4') || content.hero.media?.endsWith('.webm') ? (
                         <LazyVideo
                             src={getMediaUrl(content.hero.media)}
@@ -297,8 +289,6 @@ const ContactUs = () => {
                             style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}
                         />
                     )}
-                    {/* 👆 END OF NEW LOGIC 👆 */}
-
                     <div className="absolute inset-0"
                         style={{
                             borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px',
@@ -307,67 +297,99 @@ const ContactUs = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
                     style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-                <div className="relative z-10 w-full text-right" style={{ paddingRight: '180px' }}>
-                    <h1 className="text-[72px] text-white font-bold leading-tight">Contact Us</h1>
+                <div className="relative z-10 w-full text-right px-5 sm:px-8 md:pr-[180px] md:pl-8">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[72px] text-white font-bold leading-tight">
+                        Contact Us
+                    </h1>
                 </div>
             </section>
 
             {/* Intro */}
-            <section className="py-16 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                    <h1 className="text-[58px] text-gray-900 leading-tight mb-4 font-bold">{content.intro.title}</h1>
-                    <div className="w-full h-[1px] bg-gray-300 my-8"></div>
-                    <p className="text-[32px] text-[#4c6860] leading-tight font-bold">{content.intro.description}</p>
+            <section className="py-10 md:py-16 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[58px] text-gray-900 leading-tight mb-3 md:mb-4 font-bold">
+                        {content.intro.title}
+                    </h1>
+                    <div className="w-full h-[1px] bg-gray-300 my-6 md:my-8"></div>
+                    <p className="text-lg sm:text-xl md:text-2xl lg:text-[32px] text-[#4c6860] leading-snug md:leading-tight font-bold">
+                        {content.intro.description}
+                    </p>
                 </div>
             </section>
 
             {/* Consultation & Calendar */}
-            <section className="py-16 px-8 md:px-16 lg:px-24 bg-gray-50">
-                <div className="w-full" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
+            <section className="py-10 md:py-16 px-5 sm:px-8 md:px-12 lg:px-24 bg-gray-50">
+                <div className="w-full">
                     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
                         <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
 
-                            {/* Left - Info + Form */}
-                            <div className="p-10">
-                                <h2 className="text-3xl font-bold text-gray-900 mb-6">{content.consultation.title}</h2>
-                                <p className="text-lg text-gray-600 mb-4 leading-relaxed">{content.consultation.description}</p>
-                                <p className="text-lg text-gray-600 mb-6 leading-relaxed">{content.consultation.subDescription}</p>
-                                <h3 className="text-xl font-semibold text-gray-900 mb-3">{content.consultation.coverTitle}</h3>
-                                <ul className="space-y-2 text-lg text-gray-600 leading-relaxed mb-6">
+                            {/* Left — Info + Form */}
+                            <div className="p-6 sm:p-8 md:p-10">
+                                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
+                                    {content.consultation.title}
+                                </h2>
+                                <p className="text-base sm:text-lg text-gray-600 mb-3 md:mb-4 leading-relaxed">
+                                    {content.consultation.description}
+                                </p>
+                                <p className="text-base sm:text-lg text-gray-600 mb-4 md:mb-6 leading-relaxed">
+                                    {content.consultation.subDescription}
+                                </p>
+                                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
+                                    {content.consultation.coverTitle}
+                                </h3>
+                                <ul className="space-y-2 text-base sm:text-lg text-gray-600 leading-relaxed mb-4 md:mb-6">
                                     {content.consultation.coverPoints.map((point, idx) => (
                                         <li key={idx}>• {point}</li>
                                     ))}
                                 </ul>
-                                <p className="text-lg text-gray-600 leading-relaxed mb-8">{content.consultation.closingText}</p>
+                                <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 md:mb-8">
+                                    {content.consultation.closingText}
+                                </p>
 
                                 {/* Form */}
                                 <div className="border-t pt-6 mt-6">
-                                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Your Details</h3>
+                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+                                        Your Details
+                                    </h3>
                                     <div className="space-y-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Name <span className="text-red-500">*</span></label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Name <span className="text-red-500">*</span>
+                                            </label>
                                             <input type="text" required value={name} onChange={e => setName(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]" placeholder="Your full name" />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-[#4c6860]"
+                                                placeholder="Your full name" />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Email <span className="text-red-500">*</span></label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Email <span className="text-red-500">*</span>
+                                            </label>
                                             <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]" placeholder="your@email.com" />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-[#4c6860]"
+                                                placeholder="your@email.com" />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Phone <span className="text-red-500">*</span></label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Phone <span className="text-red-500">*</span>
+                                            </label>
                                             <input type="tel" required value={phone} onChange={e => setPhone(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]" placeholder="+8801XXXXXXXXX" />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-[#4c6860]"
+                                                placeholder="+8801XXXXXXXXX" />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Company Name
+                                            </label>
                                             <input type="text" value={companyName} onChange={e => setCompanyName(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]" placeholder="Your company" />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-[#4c6860]"
+                                                placeholder="Your company" />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Consultation Topic</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Consultation Topic
+                                            </label>
                                             <select value={topic} onChange={e => setTopic(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860]">
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-[#4c6860]">
                                                 <option value="">Select a topic</option>
                                                 <option value="Air Freight">Air Freight</option>
                                                 <option value="Sea Freight">Sea Freight</option>
@@ -378,17 +400,22 @@ const ContactUs = () => {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Additional Notes
+                                            </label>
                                             <textarea rows={3} value={additionalNotes} onChange={e => setAdditionalNotes(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#4c6860] resize-none" placeholder="Any specific requirements..." />
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-[#4c6860] resize-none"
+                                                placeholder="Any specific requirements..." />
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Right - Calendar */}
-                            <div className="p-10">
-                                <h3 className="text-[26px] font-bold text-gray-900 mb-6">Select a Date & Time</h3>
+                            {/* Right — Calendar */}
+                            <div className="p-6 sm:p-8 md:p-10">
+                                <h3 className="text-xl sm:text-2xl md:text-[26px] font-bold text-gray-900 mb-4 md:mb-6">
+                                    Select a Date &amp; Time
+                                </h3>
 
                                 {/* Month Navigation */}
                                 <div className="flex items-center justify-between mb-4">
@@ -399,7 +426,7 @@ const ContactUs = () => {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                         </svg>
                                     </button>
-                                    <p className="text-xl font-semibold text-gray-800">
+                                    <p className="text-base sm:text-lg md:text-xl font-semibold text-gray-800">
                                         {getMonthName(currentMonth)} {currentYear}
                                     </p>
                                     <button onClick={goToNextMonth}
@@ -411,14 +438,14 @@ const ContactUs = () => {
                                 </div>
 
                                 {/* Day Headers */}
-                                <div className="grid grid-cols-7 gap-2 mb-2">
+                                <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
                                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                                        <div key={day} className="text-center text-sm font-medium text-gray-500">{day}</div>
+                                        <div key={day} className="text-center text-xs sm:text-sm font-medium text-gray-500">{day}</div>
                                     ))}
                                 </div>
 
                                 {/* Calendar Grid */}
-                                <div className="grid grid-cols-7 gap-2 mb-8">
+                                <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-6 md:mb-8">
                                     {Array.from({ length: getStartDayOfMonth(currentYear, currentMonth) }).map((_, i) => (
                                         <div key={`empty-${i}`} className="aspect-square"></div>
                                     ))}
@@ -430,7 +457,7 @@ const ContactUs = () => {
                                         const isDisabled = isPast;
                                         return (
                                             <button key={day} onClick={() => !isDisabled && handleDateClick(day)} disabled={isDisabled}
-                                                className={`aspect-square flex items-center justify-center rounded-full text-sm font-medium transition-all relative
+                                                className={`aspect-square flex items-center justify-center rounded-full text-xs sm:text-sm font-medium transition-all relative
                                                     ${isDisabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' :
                                                         selectedDate === day ? 'bg-[#4c6860] text-white shadow-lg' :
                                                         isFullyBooked ? 'bg-orange-300 text-orange-800 cursor-not-allowed' :
@@ -448,7 +475,7 @@ const ContactUs = () => {
                                 </div>
 
                                 {/* Legend */}
-                                <div className="flex items-center gap-4 mb-4 text-xs text-gray-500 flex-wrap">
+                                <div className="flex items-center gap-3 sm:gap-4 mb-4 text-[10px] sm:text-xs text-gray-500 flex-wrap">
                                     <div className="flex items-center gap-1">
                                         <div className="w-3 h-3 rounded-full bg-orange-300"></div>
                                         <span>Fully Booked</span>
@@ -469,7 +496,7 @@ const ContactUs = () => {
 
                                 {selectedDate && (
                                     <div className="mb-6">
-                                        <p className="text-lg font-semibold text-gray-800 mb-1">
+                                        <p className="text-base sm:text-lg font-semibold text-gray-800 mb-1">
                                             Available Times for {selectedDate} {getMonthName(currentMonth)}:
                                         </p>
                                         {getBookedCount(selectedDate) === 1 && (
@@ -477,41 +504,39 @@ const ContactUs = () => {
                                                 ⚠️ 1 slot already booked on this date. You can book the remaining slot.
                                             </p>
                                         )}
-                                        <div className="grid grid-cols-3 gap-2">
+                                        <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                                             {timeSlots.map(time => {
                                                 const bookedTimes = getBookedTimesForDate(selectedDate);
                                                 const isTimeBooked = bookedTimes.includes(time);
                                                 const isFirstHalf = ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM'].includes(time);
                                                 const isSecondHalf = ['1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM'].includes(time);
-                                                
-                                                // Check if the booked time is in first or second half
+
                                                 const bookedInFirstHalf = bookedTimes.some(t => ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM'].includes(t));
                                                 const bookedInSecondHalf = bookedTimes.some(t => ['1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM'].includes(t));
-                                                
-                                                // Disable if: time is already booked, OR if trying to book same half as existing booking
-                                                const isDisabled = isTimeBooked || 
-                                                    (bookedInFirstHalf && isFirstHalf) || 
+
+                                                const isDisabled = isTimeBooked ||
+                                                    (bookedInFirstHalf && isFirstHalf) ||
                                                     (bookedInSecondHalf && isSecondHalf);
 
                                                 return (
-                                                    <button key={time} 
+                                                    <button key={time}
                                                         onClick={() => !isDisabled && setSelectedTime(time)}
                                                         disabled={isDisabled}
-                                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-all
+                                                        className={`px-1.5 sm:px-3 py-2 rounded-md text-[11px] sm:text-sm font-medium transition-all
                                                             ${isTimeBooked ? 'bg-orange-100 text-orange-600 border border-orange-300 cursor-not-allowed' :
                                                                 isDisabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200' :
-                                                                selectedTime === time ? 'bg-[#4c6860] text-white border border-[#4c6860]' : 
+                                                                selectedTime === time ? 'bg-[#4c6860] text-white border border-[#4c6860]' :
                                                                 'border border-gray-300 text-gray-700 hover:border-[#4c6860] hover:text-[#4c6860]'}`}
                                                         title={isTimeBooked ? 'Already booked' : isDisabled ? 'Same half already booked' : 'Available'}>
                                                         {time}
                                                         {isTimeBooked && (
-                                                            <span className="block text-[10px] text-orange-500">Booked</span>
+                                                            <span className="block text-[9px] sm:text-[10px] text-orange-500">Booked</span>
                                                         )}
                                                     </button>
                                                 );
                                             })}
                                         </div>
-                                        <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
+                                        <div className="flex items-center gap-3 sm:gap-4 mt-3 text-[10px] sm:text-xs text-gray-500 flex-wrap">
                                             <div className="flex items-center gap-1">
                                                 <div className="w-3 h-3 rounded bg-orange-100 border border-orange-300"></div>
                                                 <span>Booked</span>
@@ -521,8 +546,8 @@ const ContactUs = () => {
                                                 <span>Same half (blocked)</span>
                                             </div>
                                             <div className="flex items-center gap-1">
-                                            <div className="w-3 h-3 rounded bg-[#4c6860]"></div>
-                                            <span>Your selection</span>
+                                                <div className="w-3 h-3 rounded bg-[#4c6860]"></div>
+                                                <span>Your selection</span>
                                             </div>
                                         </div>
                                     </div>
@@ -530,7 +555,7 @@ const ContactUs = () => {
 
                                 {selectedDate && selectedTime && (
                                     <button onClick={handleBookAppointment} disabled={isSubmitting}
-                                        className="w-full bg-[#4c6860] text-white py-3 rounded-md hover:bg-[#006666] transition-all text-lg font-semibold mb-4 disabled:opacity-50">
+                                        className="w-full bg-[#4c6860] text-white py-3 rounded-md hover:bg-[#006666] transition-all text-base sm:text-lg font-semibold mb-4 disabled:opacity-50">
                                         {isSubmitting ? 'Booking...' : 'Fix Appointment'}
                                     </button>
                                 )}
@@ -541,7 +566,7 @@ const ContactUs = () => {
                                     </div>
                                 )}
 
-                                <div className="text-center text-sm text-gray-500 mt-4">
+                                <div className="text-center text-xs sm:text-sm text-gray-500 mt-4">
                                     <svg className="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2" />
@@ -555,24 +580,20 @@ const ContactUs = () => {
             </section>
 
             <Footer />
-            
-            {/* Horizontal Divider */}
+
             <div className="bg-gray-900">
               <div className="w-full h-px bg-gray-700"></div>
             </div>
 
-            {/* Copyright */}
-            <div className="bg-gray-900 text-white py-6 text-center">
+            <div className="bg-gray-900 text-white py-6 text-center px-4">
               <p className="text-sm">©2026 TRIDENT GLOBAL LOGISTICS LTD. ALL RIGHTS RESERVED</p>
             </div>
 
-            {/* Horizontal Divider */}
             <div className="bg-gray-900">
               <div className="w-full h-px bg-gray-600"></div>
             </div>
 
-            {/* Powered By */}
-            <div className="bg-gray-900 text-gray-500 py-4 text-center">
+            <div className="bg-gray-900 text-gray-500 py-4 text-center px-4">
               <p className="text-xs">Powered by - ARK PANORAMA LAB</p>
             </div>
         </div>

@@ -1,3 +1,5 @@
+// D:/Trident Log/Trident-FE/src/pages/LazyVideo.tsx
+
 import React, { useState, useEffect, useRef } from 'react';
 
 interface LazyVideoProps {
@@ -64,7 +66,7 @@ const LazyVideo: React.FC<LazyVideoProps> = ({
           playsInline={playsInline}
           poster={poster}
           onLoadedData={handleLoadedData}
-          className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={style}
         >
           <source src={src} type="video/mp4" />

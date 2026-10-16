@@ -58,7 +58,7 @@ interface CareerContent {
 }
 
 // ============================================================
-// Default content (fallback)
+// Default content (fallback) — unchanged
 // ============================================================
 const defaultContent: CareerContent = {
     isActive: true,
@@ -144,14 +144,12 @@ const Careers = () => {
                 const page = response.page;
                 const sections = page.sections || [];
 
-                // Intro
                 const introSection = findSection(sections, 'intro');
                 const intro = {
                     title: introSection?.title || defaultContent.intro.title,
                     description: introSection?.description || defaultContent.intro.description,
                 };
 
-                // Culture (icons)
                 const cultureSection = findSection(sections, 'culture');
                 const cultureIcons: CareerIcon[] = (cultureSection?.icons || []).map((icon: any) => ({
                     icon: icon.icon || 'RocketOutlined',
@@ -163,13 +161,11 @@ const Careers = () => {
                     icons: cultureIcons.length > 0 ? cultureIcons : defaultContent.culture.icons,
                 };
 
-                // Responsibility Banner
                 const responsibilitySection = findSection(sections, 'responsibilityBanner');
                 const responsibilityBanner = {
                     title: responsibilitySection?.title || defaultContent.responsibilityBanner.title,
                 };
 
-                // FAQ Section
                 const faqSectionData = findSection(sections, 'faqSection');
                 const faqs: CareerFAQ[] = (faqSectionData?.faqs || []).map((faq: any) => ({
                     title: faq.title || faq.question || '',
@@ -180,7 +176,6 @@ const Careers = () => {
                     faqs: faqs.length > 0 ? faqs : defaultContent.faqSection.faqs,
                 };
 
-                // Job Openings
                 const jobSection = findSection(sections, 'jobOpenings');
                 const jobOpenings = {
                     backgroundImage: jobSection?.background_image || defaultContent.jobOpenings.backgroundImage,
@@ -188,7 +183,6 @@ const Careers = () => {
                     description: jobSection?.description || defaultContent.jobOpenings.description,
                 };
 
-                // Why Work (icons)
                 const whyWorkSection = findSection(sections, 'whyWork');
                 const whyWorkItems: CareerIcon[] = (whyWorkSection?.icons || []).map((icon: any) => ({
                     icon: icon.icon || 'TrophyOutlined',
@@ -237,9 +231,8 @@ const Careers = () => {
             <Navbar />
 
             {/* Hero */}
-            <section className="relative h-[78vh] flex items-center justify-start overflow-hidden mt-[150px]">
+            <section className="relative h-[60vh] sm:h-[70vh] md:h-[78vh] flex items-center justify-start overflow-hidden mt-16 md:mt-[150px]">
                 <div className="absolute inset-0 overflow-hidden bg-black" style={{ borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px' }}>
-                    {/* 👇 NEW CONDITIONAL RENDERING LOGIC 👇 */}
                     {content.hero.media?.endsWith('.mp4') || content.hero.media?.endsWith('.webm') ? (
                         <LazyVideo
                             src={getMediaUrl(content.hero.media)}
@@ -262,25 +255,35 @@ const Careers = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
                     style={{ height: '45px', background: '#4c6860', borderBottomRightRadius: '60px', borderBottomLeftRadius: '60px', zIndex: 5 }} />
-                <div className="relative z-10 w-full" style={{ paddingLeft: '180px' }}>
-                    <h1 className="text-[72px] text-white font-bold leading-tight">Careers</h1>
+                <div className="relative z-10 w-full px-5 sm:px-8 md:pl-[180px] md:pr-8">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[72px] text-white font-bold leading-tight">
+                        Careers
+                    </h1>
                 </div>
             </section>
 
             {/* Intro */}
-            <section className="py-16 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '200px', paddingRight: '100px' }}>
-                    <h2 className="text-[72px] text-gray-900 leading-tight mb-4 font-bold">{content.intro.title}</h2>
-                    <div className="w-full h-[1px] bg-gray-300 my-8"></div>
-                    <p className="text-[22px] text-[#4c6860] leading-relaxed">{content.intro.description}</p>
+            <section className="py-10 md:py-16 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[72px] text-gray-900 leading-tight mb-3 md:mb-4 font-bold">
+                        {content.intro.title}
+                    </h2>
+                    <div className="w-full h-[1px] bg-gray-300 my-6 md:my-8"></div>
+                    <p className="text-base sm:text-lg md:text-xl lg:text-[22px] text-[#4c6860] leading-relaxed">
+                        {content.intro.description}
+                    </p>
                 </div>
             </section>
 
             {/* Culture */}
-            <section className="py-16 px-8 md:px-16 lg:px-24 bg-gray-50">
-                <div className="w-full" style={{ paddingLeft: '200px', paddingRight: '100px' }}>
-                    <h2 className="text-[42px] text-[#4c6860] font-bold mb-6">{content.culture.title}</h2>
-                    <p className="text-[22px] text-gray-900 leading-relaxed mb-16">{content.culture.description}</p>
+            <section className="py-10 md:py-16 px-5 sm:px-8 md:px-12 lg:px-24 bg-gray-50">
+                <div className="w-full">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] text-[#4c6860] font-bold mb-4 md:mb-6">
+                        {content.culture.title}
+                    </h2>
+                    <p className="text-base sm:text-lg md:text-xl lg:text-[22px] text-gray-900 leading-relaxed mb-10 md:mb-16">
+                        {content.culture.description}
+                    </p>
                     <div className="relative">
                         <div className="hidden lg:block absolute top-12 left-0 right-0 h-[2px] bg-[#4c6860]/40" style={{ top: '48px' }}></div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -288,11 +291,15 @@ const Careers = () => {
                                 const IconComponent = iconMap[item.icon] || RocketOutlined;
                                 return (
                                     <div key={idx} className="flex flex-col items-center text-center relative z-10">
-                                        <div className="w-24 h-24 bg-[#4c6860] rounded-full flex items-center justify-center mb-6 relative">
-                                            <span className="absolute -top-3 -right-3 w-8 h-8 bg-[#006666] text-white rounded-full flex items-center justify-center text-lg font-bold">{idx + 1}</span>
-                                            <IconComponent style={{ fontSize: '40px', color: '#fff' }} />
+                                        <div className="w-20 h-20 md:w-24 md:h-24 bg-[#4c6860] rounded-full flex items-center justify-center mb-5 md:mb-6 relative">
+                                            <span className="absolute -top-3 -right-3 w-8 h-8 bg-[#006666] text-white rounded-full flex items-center justify-center text-lg font-bold">
+                                                {idx + 1}
+                                            </span>
+                                            <IconComponent style={{ fontSize: '36px', color: '#fff' }} />
                                         </div>
-                                        <p className="text-[22px] text-gray-700 leading-relaxed">{item.text}</p>
+                                        <p className="text-base sm:text-lg md:text-xl lg:text-[22px] text-gray-700 leading-relaxed">
+                                            {item.text}
+                                        </p>
                                     </div>
                                 );
                             })}
@@ -302,29 +309,35 @@ const Careers = () => {
             </section>
 
             {/* Responsibility Banner */}
-            <section className="py-16 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '200px', paddingRight: '100px' }}>
-                    <h2 className="text-[42px] text-[#4c6860] font-bold">{content.responsibilityBanner.title}</h2>
+            <section className="py-10 md:py-16 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] text-[#4c6860] font-bold">
+                        {content.responsibilityBanner.title}
+                    </h2>
                 </div>
             </section>
 
             {/* FAQ Section */}
-            <section className="py-16 px-8 md:px-16 lg:px-24 bg-gray-50">
-                <div className="w-full" style={{ paddingLeft: '200px', paddingRight: '100px' }}>
-                    <div className="grid md:grid-cols-2 gap-16 items-start">
+            <section className="py-10 md:py-16 px-5 sm:px-8 md:px-12 lg:px-24 bg-gray-50">
+                <div className="w-full">
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
                         <div>
                             {content.faqSection.faqs.map((item, index) => (
                                 <div key={index} className="border-b border-gray-300">
                                     <button onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                                        className="w-full flex items-center justify-between py-6 text-left hover:bg-gray-100 transition-colors px-4 rounded-lg">
-                                        <span className="text-[28px] text-gray-800 font-medium pr-8">{item.title}</span>
+                                        className="w-full flex items-center justify-between py-5 md:py-6 text-left hover:bg-gray-100 transition-colors px-3 md:px-4 rounded-lg">
+                                        <span className="text-lg sm:text-xl md:text-2xl lg:text-[28px] text-gray-800 font-medium pr-4 md:pr-8">
+                                            {item.title}
+                                        </span>
                                         <span className="flex-shrink-0 text-[#4c6860]">
                                             {openFAQ === index ? <MinusOutlined style={{ fontSize: '20px' }} /> : <PlusOutlined style={{ fontSize: '20px' }} />}
                                         </span>
                                     </button>
                                     {openFAQ === index && (
-                                        <div className="pb-6 px-4">
-                                            <p className="text-[24px] text-gray-600 leading-relaxed">{item.narration}</p>
+                                        <div className="pb-5 md:pb-6 px-3 md:px-4">
+                                            <p className="text-base sm:text-lg md:text-xl lg:text-[24px] text-gray-600 leading-relaxed">
+                                                {item.narration}
+                                            </p>
                                         </div>
                                     )}
                                 </div>
@@ -341,39 +354,46 @@ const Careers = () => {
                 </div>
             </section>
 
-            {/* Job Openings Parallax */}
-            <div className="relative h-screen flex items-center justify-center"
-                style={{
-                    backgroundImage: `url('${getMediaUrl(content.jobOpenings.backgroundImage)}')`,
-                    backgroundAttachment: 'fixed', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'
-                }}>
+            {/* Job Openings Parallax — bg-fixed only on md+ to avoid iOS bug */}
+            <div
+                className="relative h-[60vh] md:h-screen flex items-center justify-center bg-scroll md:bg-fixed bg-center bg-cover bg-no-repeat"
+                style={{ backgroundImage: `url('${getMediaUrl(content.jobOpenings.backgroundImage)}')` }}
+            >
                 <div className="absolute inset-0 bg-black/60"></div>
-                <div className="relative z-10 text-center px-8">
-                    <h2 className="text-[72px] text-white font-bold mb-6">{content.jobOpenings.title}</h2>
-                    <p className="text-[36px] text-white font-bold max-w-4xl mx-auto">{content.jobOpenings.description}</p>
+                <div className="relative z-10 text-center px-5 sm:px-8">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[72px] text-white font-bold mb-4 md:mb-6">
+                        {content.jobOpenings.title}
+                    </h2>
+                    <p className="text-lg sm:text-xl md:text-2xl lg:text-[36px] text-white font-bold max-w-4xl mx-auto leading-snug">
+                        {content.jobOpenings.description}
+                    </p>
                 </div>
             </div>
 
             {/* Why Work */}
-            <section className="py-24 px-8 md:px-16 lg:px-24 bg-white">
-                <div className="w-full" style={{ paddingLeft: '200px', paddingRight: '100px' }}>
-                    <div className="grid md:grid-cols-2 gap-16 items-center">
-                        <div className="flex items-center justify-center">
+            <section className="py-12 md:py-24 px-5 sm:px-8 md:px-12 lg:px-24 bg-white">
+                <div className="w-full">
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+                        <div className="flex items-center justify-center order-2 md:order-1">
                             <motion.div className="rounded-lg overflow-hidden shadow-xl w-full"
                                 initial={{ opacity: 0, x: -300 }} whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: '-100px' }} transition={{ duration: 0.8, ease: 'easeOut' }}>
                                 <LazyImage src={getMediaUrl(content.whyWork.image)} alt="Why work at Trident" className="w-full h-auto" style={{ objectFit: 'cover' }} />
                             </motion.div>
                         </div>
-                        <div>
-                            <h2 className="text-[56px] text-[#4c6860] font-bold mb-8">{content.whyWork.title}</h2>
-                            <div className="space-y-6">
+                        <div className="order-1 md:order-2">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[56px] text-[#4c6860] font-bold mb-6 md:mb-8">
+                                {content.whyWork.title}
+                            </h2>
+                            <div className="space-y-4 md:space-y-6">
                                 {content.whyWork.items.map((item, idx) => {
                                     const IconComponent = iconMap[item.icon] || TrophyOutlined;
                                     return (
-                                        <div key={idx} className="flex items-start gap-4">
-                                            <IconComponent style={{ fontSize: '28px', color: '#4c6860' }} />
-                                            <p className="text-[22px] text-gray-700 leading-relaxed">{item.text}</p>
+                                        <div key={idx} className="flex items-start gap-3 md:gap-4">
+                                            <IconComponent style={{ fontSize: '24px', color: '#4c6860', marginTop: '4px', flexShrink: 0 }} />
+                                            <p className="text-base sm:text-lg md:text-xl lg:text-[22px] text-gray-700 leading-relaxed">
+                                                {item.text}
+                                            </p>
                                         </div>
                                     );
                                 })}
@@ -384,24 +404,20 @@ const Careers = () => {
             </section>
 
             <Footer />
-            
-            {/* Horizontal Divider */}
+
             <div className="bg-gray-900">
               <div className="w-full h-px bg-gray-700"></div>
             </div>
 
-            {/* Copyright */}
-            <div className="bg-gray-900 text-white py-6 text-center">
+            <div className="bg-gray-900 text-white py-6 text-center px-4">
               <p className="text-sm">©2026 TRIDENT GLOBAL LOGISTICS LTD. ALL RIGHTS RESERVED</p>
             </div>
 
-            {/* Horizontal Divider */}
             <div className="bg-gray-900">
               <div className="w-full h-px bg-gray-600"></div>
             </div>
 
-            {/* Powered By */}
-            <div className="bg-gray-900 text-gray-500 py-4 text-center">
+            <div className="bg-gray-900 text-gray-500 py-4 text-center px-4">
               <p className="text-xs">Powered by - ARK PANORAMA LAB</p>
             </div>
         </div>
