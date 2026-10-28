@@ -1,0 +1,84 @@
+{
+  "pages": {
+    "home": {
+      "isActive": true,
+      "hero": {
+        "title": "Navigating Global Trade with Precision",
+        "subtitle": "Complete end-to-end logistics solutions from factory floor to customer door.",
+        "image": "/Hero-Video.mp4",
+        "ctaText": "Explore Our Services",
+        "ctaLink": "/services"
+      }
+    },
+    "supply-chain-management": {
+      "isActive": true,
+      "hero": {
+        "title": "Control, visibility, efficiency – from start to finish",
+        "subtitle": "Supply Chain Management solutions designed to handle your logistics complexities",
+        "image": "/supply_chain_hero.jpg",
+        "ctaText": "Learn more",
+        "ctaLink": "/contact"
+      }
+    },
+    "cold-storage": {
+      "isActive": true,
+      "hero": {
+        "title": "Cold Storage",
+        "subtitle": "Store, handle, and transport temperature-sensitive cargo through our network of strategically located cold storage facilities.",
+        "image": "/cold_storage.png",
+        "ctaText": "Contact us",
+        "ctaLink": "/contact"
+      }
+    },
+    "project-logistics": {
+      "isActive": true,
+      "hero": {
+        "title": "Project Logistics",
+        "subtitle": "Whatever your project, we have the logistics.",
+        "image": "/project_cargo.avif",
+        "ctaText": "Contact us",
+        "ctaLink": "/contact"
+      }
+    },
+    "garments-on-hanger": {
+      "isActive": true,
+      "hero": {
+        "title": "Garments on Hangers",
+        "subtitle": "Specialised containers with built-in hangers.",
+        "image": "/garment-on-hanger-logistics_hero.jpg",
+        "ctaText": "Contact us",
+        "ctaLink": "/contact"
+      }
+    },
+    "cars-in-containers": {
+      "isActive": true,
+      "hero": {
+        "title": "Shift into higher gear to overcome automotive disruptions",
+        "subtitle": "Integrated logistics brings greater flexibility and agility to your supply chain.",
+        "image": "/car_in_container_hero_2.png",
+        "ctaText": "Contact us",
+        "ctaLink": "/contact"
+      }
+    },
+    "flexibag-logistics": {
+      "isActive": true,
+      "hero": {
+        "title": "Flexibag Logistics",
+        "subtitle": "Transport bulk liquids safely and efficiently.",
+        "image": "/lubricant_01_hero.jpg",
+        "ctaText": "Contact us",
+        "ctaLink": "/contact"
+      }
+    }
+  },
+  "globalSettings": {
+    "companyName": "Trident Global Logistics",
+    "contactEmail": "info@trident.com",
+    "contactPhone": "+880 1234 567890",
+    "socialLinks": {
+      "facebook": "https://facebook.com/trident",
+      "linkedin": "https://linkedin.com/company/trident",
+      "twitter": "https://twitter.com/trident"
+    }
+  }
+}

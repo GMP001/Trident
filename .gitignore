@@ -1,0 +1,40 @@
+# ==========================================
+# Dependencies & Build Outputs
+# ==========================================
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# ==========================================
+# Environment Variables
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Backend Dynamic Uploads (Admin Panel files)
+# ==========================================
+# Ignore the backend folder where admin uploads go
+Trident-BE/uploads/
+uploads/
+public/uploads/
+
+# ==========================================
+# Heavy Video Files (Do not push to Git)
+# ==========================================
+*.mp4
+*.MP4
+*.webm
+*.mov
+*.avi
+*.mkv
+
+# ==========================================
+# Logs & OS Files
+# ==========================================
+*.log
+npm-debug.log*
+.DS_Store
+*.zip
